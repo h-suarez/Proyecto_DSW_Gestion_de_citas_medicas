@@ -9,7 +9,7 @@ namespace SistemaCitasMedicas.DAO
 {
     public class conexionDAO
     {
-        SqlConnection cn = new SqlConnection(@"server=; database=SISTEMACONSULTASMEDICAS; integrated security=true");
+        SqlConnection cn = new SqlConnection(@"server=DESKTOP-VU97K46\SQLEXPRESS; database=SISTEMACONSULTASMEDICAS; integrated security=true");
         public SqlConnection getcn { get { return cn; } }
     }
 }

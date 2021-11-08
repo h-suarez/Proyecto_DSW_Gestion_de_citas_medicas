@@ -1,3 +1,5 @@
+use SISTEMACONSULTASMEDICAS
+
 use master
 
 drop database if exists SISTEMACONSULTASMEDICAS

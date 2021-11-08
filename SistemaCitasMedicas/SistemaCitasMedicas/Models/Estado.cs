@@ -8,6 +8,6 @@ namespace SistemaCitasMedicas.Models
     public class Estado
     {
         public int idestado { get; set; }
-        public int descripcion { get; set; }
+        public string descripcion { get; set; }
     }
 }
