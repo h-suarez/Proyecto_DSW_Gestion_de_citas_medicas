@@ -1,0 +1,34 @@
+﻿@{
+    ViewBag.Title = "Login";
+}
+
+@using (Html.BeginForm("Login","Home",FormMethod.Post))
+{
+<form>
+    <div class="card mx-auto" style="width: 18rem;">
+        <div class="card-body">
+            <img src="#" alt="PLACEHOLDER_LOGO" />
+            <br />
+            <label>Email: </label>
+            <input type="email" class="form-control" id="email" name="email">
+            <label>Contraseña: </label>
+            <input type="password" class="form-control" id="clave" name="clave">
+            <br />
+            <input type="submit" value="Login" class="btn btn-primary" />
+            <br />
+            <p>
+                No tienes cuenta?
+                <a href="#" class="card-link">Registrate</a>
+            </p>
+        </div>
+        @if (ViewBag.msj != null)
+        {
+            <div class="alert alert-danger" role="alert">
+                @ViewBag.msj
+            </div>
+        }
+    </div>
+</form>
+}
+
+

@@ -1,0 +1,10 @@
+﻿@using SistemaCitasMedicas.Models
+@model IEnumerable<SistemaCitasMedicas.Models.Usuario>
+
+@{
+    ViewBag.Title = "SessionTests";
+    var usuario = (Usuario)Session["usuario"];
+}
+
+<h2>SessionTests</h2>
+<p>Bienvenido, @Html.DisplayFor(u => usuario.email)</p>
