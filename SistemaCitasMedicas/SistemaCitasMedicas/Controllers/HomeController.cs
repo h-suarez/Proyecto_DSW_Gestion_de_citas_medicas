@@ -12,11 +12,18 @@ namespace SistemaCitasMedicas.Controllers
 {
     public class HomeController : Controller
     {
+        //DAOs
+        usuarioDAO usuarios = new usuarioDAO();
+        sexoDAO sexos = new sexoDAO();
+        distritoDAO distritos = new distritoDAO();
+        tipoCuentaDAO tipocuentas = new tipoCuentaDAO();
+        estadoDAO estados = new estadoDAO();
+
         public ActionResult SessionTests()
         {
             return View(Session["usuario"] as List<Usuario>);
         }
-        usuarioDAO usuarios = new usuarioDAO();
+
         public ActionResult Login()
         {
             return View();
