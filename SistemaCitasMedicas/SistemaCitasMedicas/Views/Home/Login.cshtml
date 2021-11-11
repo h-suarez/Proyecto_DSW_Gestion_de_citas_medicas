@@ -80,7 +80,7 @@
                         <br />
                         <p class="text-custom" style="font-size:17px;">
                             No tienes cuenta?
-                            <a href="#" class="card-link">Registrate</a>
+                            @Html.ActionLink("Registrate", "AgregarCuentaPaciente", null, new { @class = "card-link text-decoration-none" })
                         </p>
                     </div>
                     @if (ViewBag.msj != null)
