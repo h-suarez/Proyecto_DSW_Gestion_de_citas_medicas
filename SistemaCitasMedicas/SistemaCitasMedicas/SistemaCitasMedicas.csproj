@@ -121,6 +121,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AdministradorController.cs" />
+    <Compile Include="Controllers\ClienteController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="DAO\conexionDAO.cs" />
     <Compile Include="DAO\distritoDAO.cs" />
@@ -160,7 +161,15 @@
     <Content Include="Content\Site.css" />
     <Content Include="IMAGENES\bg-form.jpg" />
     <Content Include="IMAGENES\bg1.png" />
+    <Content Include="IMAGENES\carousel_1.png" />
+    <Content Include="IMAGENES\correo.png" />
+    <Content Include="IMAGENES\facebooklogo.png" />
+    <Content Include="IMAGENES\instagramlogo.png" />
     <Content Include="IMAGENES\logo.png" />
+    <Content Include="IMAGENES\mision.png" />
+    <Content Include="IMAGENES\twitterlogo.png" />
+    <Content Include="IMAGENES\vision.png" />
+    <Content Include="IMAGENES\youtubelogo.png" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
@@ -217,6 +226,9 @@
     <Content Include="Views\Home\AgregarCuentaPaciente.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Home\SessionTests.cshtml" />
+    <Content Include="Views\Cliente\Home.cshtml" />
+    <Content Include="Views\Shared\_ClienteHeader.cshtml" />
+    <Content Include="Views\Shared\_ClienteFooter.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
