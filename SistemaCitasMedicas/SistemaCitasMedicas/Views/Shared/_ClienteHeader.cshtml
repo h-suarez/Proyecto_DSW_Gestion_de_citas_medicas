@@ -1,0 +1,44 @@
+﻿<style>
+    .navbar-white {
+        background-color: white !important;
+    }
+
+    * {
+        font-family: 'Roboto Slab', serif;
+    }
+</style>
+
+<nav class="navbar navbar-expand-lg navbar-light navbar-white bg-light">
+    <div class="container">
+        <img src="~/IMAGENES/logo.png" alt="" width="84" height="84">
+        <a class="navbar-brand fs-2">Sistema de Citas Medicas</a>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle fs-4" href="#" id="navbarCitas" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Citas
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Pide tu Cita</a></li><!--REEMPLAZAR CON Html.ActionLink-->
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fs-4" href="#">Especialidades</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fs-4" href="#">Medicos</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle fs-4" href="#" id="navbarCuenta" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Cuenta
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Mi Perfil</a></li><!--REEMPLAZAR CON Html.ActionLink-->
+                        <li><a class="dropdown-item" href="#">Historial de Citas</a></li><!--REEMPLAZAR CON Html.ActionLink-->
+                        <li><a class="dropdown-item" href="#">Cerrar Sesion</a></li><!--REEMPLAZAR CON Html.ActionLink-->
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
