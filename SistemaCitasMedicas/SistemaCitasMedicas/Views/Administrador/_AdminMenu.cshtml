@@ -1,0 +1,136 @@
+﻿@using SistemaCitasMedicas.Models
+
+@{
+    var usuario = (Usuario)Session["usuario"];
+}
+@if (usuario.idestado == 1) {
+    <div id="layoutSidenav_nav">
+        <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+            <div class="sb-sidenav-menu">
+                <!-- Comienza el menu de opciones -->
+                <div class="nav">
+                    @if (usuario.idtipo == 1) {
+                        <div class="sb-sidenav-menu-heading">Panel</div>
+                        <a class="nav-link" href="HomeAdmin">
+                            <div class="sb-nav-link-icon"><i class="fas fa-bullseye"></i></div>
+                            Panel de control
+                        </a>
+                        <!-- Final del Panel Principal -->
+                        <!-- Panel de Navegación -->
+                        <div class="sb-sidenav-menu-heading">Navegación</div>
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseMantenimiento" aria-expanded="false" aria-controls="collapseMantenimiento">
+                            <div class="sb-nav-link-icon"><i class="bi bi-box-seam"></i></div>
+                            Mantenimiento
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+                        <div class="collapse" id="collapseMantenimiento" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
+                                <!-- Opciones del panel de navegación -->
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    @Html.ActionLink("Especialidades", "MantenimientoEspecialidades", null,new {@class= "nav-link"})
+                                    @Html.ActionLink("Medicos", "",null,new {@class= "nav-link"})
+                                    @Html.ActionLink("Usuarios", "",null,new {@class= "nav-link"})
+                                    @Html.ActionLink("Proveedores", "",null,new {@class= "nav-link"})
+                                    @Html.ActionLink("Farmaceuticos", "",null,new {@class= "nav-link"})
+                                </nav>
+                                <!-- Opciones del panel de navegación -->
+                            </nav>
+                        </div>
+                        
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseConsula" aria-expanded="false" aria-controls="collapseConsula">
+                            <div class="sb-nav-link-icon"><i class="bi bi-pencil-square"></i></div>
+                            Consultas
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+                        <div class="collapse" id="collapseConsula" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
+                                <!-- Opciones del panel de navegación -->
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    @Html.ActionLink("Citas medicas", "", null, new { @class = "nav-link" })
+                                </nav>
+                                <!-- Opciones del panel de navegación -->
+                            </nav>
+                        </div>
+
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseFarmacia" aria-expanded="false" aria-controls="collapseFarmacia">
+                            <div class="sb-nav-link-icon"><i class="fas fa-store"></i></div>
+                            Farmacia
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+                        <div class="collapse" id="collapseFarmacia" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
+                                <!-- Opciones del panel de navegación -->
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    @Html.ActionLink("Compras", "", null, new { @class = "nav-link" })
+                                </nav>
+                                <!-- Opciones del panel de navegación -->
+                            </nav>
+                        </div>
+
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseReporte" aria-expanded="false" aria-controls="collapseReporte">
+                            <div class="sb-nav-link-icon"><i class="bi bi-clipboard-data"></i></div>
+                            Reportes
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+                        <div class="collapse" id="collapseReporte" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
+                                <!-- Opciones del panel de navegación -->
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    @Html.ActionLink("Ventas", "", null, new { @class = "nav-link" })
+                                    @Html.ActionLink("Citas generales", "", null, new { @class = "nav-link" })
+                                </nav>
+                                <!-- Opciones del panel de navegación -->
+                            </nav>
+                        </div>
+                    <!-- Panel Principal -->
+                    <!-- Final del Panel de Navegación -->
+                    }else if (usuario.idtipo == 3) {
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseConsula" aria-expanded="false" aria-controls="collapseConsula">
+                            <div class="sb-nav-link-icon"><i class="bi bi-pencil-square"></i></div>
+                            Consultas
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+                        <div class="collapse" id="collapseConsula" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
+                                <!-- Opciones del panel de navegación -->
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    @Html.ActionLink("Citas medicas", "", null, new { @class = "nav-link" })
+                                </nav>
+                                <!-- Opciones del panel de navegación -->
+                            </nav>
+                        </div>
+                    }else if (usuario.idtipo == 4){
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseFarmacia" aria-expanded="false" aria-controls="collapseFarmacia">
+                            <div class="sb-nav-link-icon"><i class="fas fa-store"></i></div>
+                            Farmacia
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+                        <div class="collapse" id="collapseFarmacia" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
+                                <!-- Opciones del panel de navegación -->
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    @Html.ActionLink("Compras", "", null, new { @class = "nav-link" })
+                                </nav>
+                                <!-- Opciones del panel de navegación -->
+                            </nav>
+                        </div>
+                    }else{
+                        <div class="text-center">!!Ahh perro me intentas hakear</div>
+                    }
+
+                </div>
+                <!-- Termina el menu de opciones -->
+            </div>
+
+            <!-- Contenedor del usuario conectado -->
+            <div class="sb-sidenav-footer">
+                <div class="small text-white text-center">SISTEMA MEDICO</div>
+                <div class="small text-white">@Html.Label(usuario.nombreusu)</div>
+            </div>
+
+        </nav>
+    </div>
+}else{
+    <div>Que paso master, que hace aqui?</div>
+}
+    

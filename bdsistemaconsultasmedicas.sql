@@ -369,10 +369,14 @@ go
 
 create proc usp_listar_medicos
 as
+select*from tb_medico
+go
+/*create proc usp_listar_cuentas_tipo_medico
+as
 select*from tb_usuario
 where idtipo = 3
 order by idusuario asc
-go
+go*/
 
 create proc usp_listar_medicos_x_especiliadad
 @especialidad int
@@ -421,34 +425,34 @@ go
 create table tb_cita(
 idcita int primary key identity(1,1),
 idmedico int not null,
+idusuario int not null foreign key(idusuario) references tb_usuario(idusuario),
 fechacita date not null,
+horacita time not null,
 --horacita int not null default datepart(hour,GETDATE()),
 --minutocita int not null,
-idusuario int not null foreign key(idusuario) references tb_usuario(idusuario),
-horacita time not null,
 preciocita decimal(11,2) not null default 50.00 check(preciocita >= 00.00),
 pagocita decimal(11,2) not null default 0.00,
 observaciones varchar(350) default null,
 prescripcion varchar(350) default null,
-idestado int not null default 5,
+idestado int not null default 7,
 fechaReg date not null default GETDATE(),
 foreign key(idmedico) references tb_medico(idmedico),
 foreign key(idestado) references tb_estado(idestado)
 )
 --truncate table tb_cita
 --insert into tb_cita values('estoy mal',3,GETDATE(),datepart(hour,GETDATE()),'','',default,default)
-insert into tb_cita values(1,'Juan de la torre',12345678,'5-6-2021','2:50',default,default,default,default,default,default)
-insert into tb_cita values(2,'Maria galvez',98762541,'5-6-2021','5:50 PM',default,default,default,default,default,default)
-insert into tb_cita values(2,'Lucas montero',65463213,'5-6-2021','3:50 AM',default,default,default,default,default,default)
+insert into tb_cita values(1,1,'5-6-2021','2:50',default,default,'ninguna observación','ninguna prescripción',default,default)
+insert into tb_cita values(2,1,'5-7-2021','5:50 PM',default,default,'ninguna observación','ninguna prescripción',default,default)
+insert into tb_cita values(2,1,'5-12-2021','3:50 AM',default,default,'ninguna observación','ninguna prescripción',default,default)
 go
 
 /******************************LISTARES********************************/
 -- SP para usuario
 create proc usp_listar_citas_de_paciente
-@nom varchar(100)
+@paciente int
 as
 select*from tb_cita
-where nompaciente = @nom
+where idusuario = @paciente
 order by idcita asc
 go
 
@@ -477,10 +481,10 @@ go
 -- SP el medico
 create proc usp_listar_citas_x_paciente_medico
 @medico int,
-@paciente varchar(100)
+@paciente int
 as
 select*from tb_cita
-where idmedico = @medico and nompaciente like '%'+@paciente+'%'
+where idmedico = @medico and idusuario = @paciente
 order by idcita asc
 go
 
@@ -504,25 +508,24 @@ go
 -- SP para pacientes
 create proc usp_agregar_cita
 @medico int,
-@paciente varchar(100),
-@dni int,
+@paciente int,
 @fecha date,
 @hora time
 as
-insert into tb_cita values(@medico,@paciente,@dni,@fecha,@hora,default,default,default,default,default,default)
+insert into tb_cita values(@medico,@paciente,@fecha,@hora,default,default,default,default,default,default)
 go
 
 -- SP para medicos
 create proc usp_editar_cita
 @idcita int,
 @medico int,
-@nompac varchar(100),
+@paciente int,
 @observaciones varchar(350),
 @prescripcion varchar(350),
 @pago decimal(11,2),
 @estado int
 as
-update tb_cita set idmedico = @medico, nompaciente = @nompac, observaciones = @observaciones, 
+update tb_cita set idmedico = @medico, idusuario = @paciente, observaciones = @observaciones, 
 prescripcion = @prescripcion, pagocita = @pago, idestado = @estado where idcita = @idcita
 go
 
@@ -715,30 +718,48 @@ insert into tb_detalleVenta values(@idventa,@farm,@cant,@preunit)
 go
 
 /***********************************************SP PARA PANEL DE CONTROL***************************************************/
-select count(idmedico) from tb_medico
+/*select count(idmedico) from tb_medico
 select count(idusuario) from tb_usuario
-select count(idcita) from tb_cita
+select count(idcita) from tb_cita where idestado = 8*/
 
 -- VENTAS
 -- este mes
-select COUNT(idventa) from tb_venta
+alter proc usp_ventas_este_mes
+as
+select * from tb_venta
 where Month(fechaReg) = Month(getdate())
+go
 -- mes pasado
-select COUNT(idventa) from tb_venta
+alter proc usp_ventas_este_mes_pasado
+as
+select * from tb_venta
 where Month(fechaReg) = month(dateadd(month, -1, GETDATE()))
+go
 
 --USUARIOS
 -- este mes
-select COUNT(idusuario) from tb_usuario
+create proc usp_usuarios_este_mes
+as
+select * from tb_usuario
 where Month(fechaRegusu) = Month(getdate())
+go
 -- mes pasado
-select COUNT(idusuario) from tb_usuario
+create proc usp_usuarios_este_mes_pasado
+as
+select * from tb_usuario
 where Month(fechaRegusu) = month(dateadd(month, -1, GETDATE()))
+go
 
 --INGRESOS VENTAS
 -- este mes
+/*create proc usp_ingresos_este_mes
+as
 select isnull(sum(preciotot),0.00) from tb_venta
 where Month(fechaReg) = Month(getdate())
+go
 -- mes pasado
+create proc usp_ingresos_este_mes_pasado
+as
 select isnull(sum(preciotot),0.00) from tb_venta
 where Month(fechaReg) = month(dateadd(month, -1, GETDATE()))
+go*/

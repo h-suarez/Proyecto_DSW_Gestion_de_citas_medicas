@@ -1,0 +1,131 @@
+﻿@using SistemaCitasMedicas.Models
+@{
+    var usuario = (Usuario)Session["usuario"];
+}
+
+<body class="sb-nav-fixed">
+    @Html.Partial("_AdminMenuSuperior")
+    <div id="layoutSidenav">
+        @Html.Partial("_AdminMenu")
+        <div id="layoutSidenav_content">
+            <!-- Contenido de la pagina -->
+            <main>
+                <div class="container-fluid px-4">
+                    <h1 class="mt-4 mb-5 text-center font-monospace fw-bold">Panel de Control</h1>
+                    <h1 class="mt-4 mb-5">Citas Medicas</h1>
+                    <!--CITAS MEDICAS-->
+                    <div class="row mb-4">
+
+                        <div class="col-xl-4">
+                            <div class="card mb-4">
+                                <div class="card-header text-center text-white fw-bold h5 bg-success">
+                                    <i class="bi bi-activity me-1"></i>
+                                    Medicos
+                                </div>
+                                <div class="card-body">
+                                    <h2 class="text-muted text-center">@ViewBag.cantidamed</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-4">
+                            <div class="card mb-4">
+                                <div class="card-header text-center text-white fw-bold h5 bg-primary">
+                                    <i class="fas fa-users me-1"></i>
+                                    Usuarios
+                                </div>
+                                <div class="card-body">
+                                    <h2 class="text-muted text-center">@ViewBag.cantidadusu</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-4">
+                            <div class="card mb-4">
+                                <div class="card-header text-center text-white fw-bold h5 bg-danger">
+                                    <i class="bi bi-clipboard-plus me-1"></i>
+                                    Citas
+                                </div>
+                                <div class="card-body">
+                                    <h2 class="text-muted text-center">@ViewBag.cantidcita</h2>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!--ECCOMERCE-->
+                    <h1 class="mt-4 mb-4">Eccomerce</h1>
+                    <div class="row">
+
+                        <div class="col-xl-4">
+                            <div class="card mb-4">
+                                <div class="card-header text-white fw-bold h6 bg-dark">
+                                    <i class="fas fa-box me-1"></i>
+                                    Ventas
+                                </div>
+                                <div class="card-body">
+                                    <h2 class="text-muted text-center">@ViewBag.mesactualventas</h2>
+                                </div>
+                                <div class="card-footer text-white fw-bold bg-dark bi bi-calendar-week">
+                                    Este mes
+                                </div>
+                                <div class="card-body">
+                                    <h2 class="text-muted text-center">@ViewBag.mespasadoventas</h2>
+                                </div>
+                                <div class="card-footer text-white fw-bold bg-dark bi bi-calendar-week">
+                                    El mes pasado
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-4">
+                            <div class="card mb-4">
+                                <div class="card-header text-white fw-bold h6 bg-dark">
+                                    <i class="fas fa-box me-1"></i>
+                                    Usuarios
+                                </div>
+                                <div class="card-body">
+                                    <h2 class="text-muted text-center">@ViewBag.mesactualusuarios</h2>
+                                </div>
+                                <div class="card-footer text-white fw-bold bg-dark bi bi-calendar-week">
+                                    Este mes
+                                </div>
+                                <div class="card-body">
+                                    <h2 class="text-muted text-center">@ViewBag.mespasadousuarios</h2>
+                                </div>
+                                <div class="card-footer text-white fw-bold bg-dark bi bi-calendar-week">
+                                    El mes pasado
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-4">
+                            <div class="card mb-4">
+                                <div class="card-header text-white fw-bold h6 bg-dark">
+                                    <i class="fas fa-box me-1"></i>
+                                    Ingresos
+                                </div>
+                                <div class="card-body">
+                                    <h2 class="text-muted text-center">@ViewBag.mesactualIngresos</h2>
+                                </div>
+                                <div class="card-footer text-white fw-bold bg-dark bi bi-calendar-week">
+                                    Este mes
+                                </div>
+                                <div class="card-body">
+                                    <h2 class="text-muted text-center">@ViewBag.mespasadoIngresos</h2>
+                                </div>
+                                <div class="card-footer text-white fw-bold bg-dark bi bi-calendar-week">
+                                    El mes pasado
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </main>
+            <!-- Termina el contenido de la pagina -->
+            @Html.Partial("_AdminFooter")
+        </div>
+    </div>
+</body>
+

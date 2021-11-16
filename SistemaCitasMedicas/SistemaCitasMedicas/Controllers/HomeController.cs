@@ -35,8 +35,16 @@ namespace SistemaCitasMedicas.Controllers
             
             if(usuario!=null)
             { 
-                Session["usuario"] = usuario;
-                return RedirectToAction("Home","Cliente");
+                if(usuario.idtipo == 1 || usuario.idtipo == 3 || usuario.idtipo == 4)
+                {
+                    Session["usuario"] = usuario;
+                    return RedirectToAction("HomeAdmin", "Administrador");
+                }
+                else
+                {
+                    Session["usuario"] = usuario;
+                    return RedirectToAction("Home","Cliente");
+                }
             }
             
             ViewBag.msj = "Error: combinación de correo y clave errónea.";
