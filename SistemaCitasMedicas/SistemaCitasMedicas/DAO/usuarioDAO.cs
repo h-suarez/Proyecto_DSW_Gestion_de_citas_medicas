@@ -144,5 +144,29 @@ namespace SistemaCitasMedicas.DAO
             }
             return lista;
         }
+        public string registrarUsuEmpleado(string sp, SqlParameter[] pars = null, int op = 0)
+        {
+            cn = new conexionDAO();
+            string mensaje = "";
+            try
+            {
+                SqlCommand cmd = new SqlCommand(sp, cn.getcn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                if (pars != null) cmd.Parameters.AddRange(pars.ToArray());
+                cn.getcn.Open();
+                int c = cmd.ExecuteNonQuery();
+                if (op == 1) mensaje = c + " Se creo la cuenta exitosamente";
+                if (op == 2) mensaje = c + " Se actualizo la cuenta exitosamente";
+            }
+            catch (SqlException ex)
+            {
+                mensaje = ex.Message;
+            }
+            finally
+            {
+                cn.getcn.Close();
+            }
+            return mensaje;
+        }
     }
 }

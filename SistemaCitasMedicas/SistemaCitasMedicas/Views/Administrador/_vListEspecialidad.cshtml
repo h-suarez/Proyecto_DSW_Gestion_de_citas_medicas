@@ -1,0 +1,39 @@
+﻿@model IEnumerable<SistemaCitasMedicas.Models.Especialidad>
+
+<div class="card-body mt-3">
+    <table class="table" id="datatablesSimple">
+        <thead class="table-dark mt-0 pt-0">
+            <tr>
+                <th>
+                    Id
+                </th>
+                <th>
+                    Imagen
+                </th>
+                <th>
+                    Nombre
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.idespecialidad)
+                </td>
+                <td class="d-flex justify-content-center">
+                    <img src="@Url.Content(item.fotoesp)" style="width:100px;" alt="Img Especialidad" />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.nombreesp)
+                </td>
+                <td class="text-center">
+                    @Html.ActionLink("Seleccione", "MantenimientoEspecialidades", new { idesp = item.idespecialidad },new {@class = "btn btn-link text-decoration-none p-0" })
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>

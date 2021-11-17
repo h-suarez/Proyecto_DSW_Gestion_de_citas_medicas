@@ -49,8 +49,8 @@ namespace SistemaCitasMedicas.DAO
                 if (pars != null) cmd.Parameters.AddRange(pars.ToArray());
                 cn.getcn.Open();
                 int c = cmd.ExecuteNonQuery();
-                if (op == 1) mensaje = c + " Especialida agregada";
-                else if (op == 2) mensaje = c + " Especialida actualizada";
+                if (op == 1) mensaje = c + " Especialidad agregada";
+                else if (op == 2) mensaje = c + " Especialidad actualizada";
             }
             catch(SqlException ex) { mensaje = ex.Message; }
             finally { cn.getcn.Close(); }

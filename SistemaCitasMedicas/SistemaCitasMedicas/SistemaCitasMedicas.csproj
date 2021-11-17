@@ -248,6 +248,9 @@
     <Content Include="Views\Administrador\HomeAdmin.cshtml" />
     <Content Include="Views\Administrador\_AdminMenuSuperior.cshtml" />
     <Content Include="Views\Administrador\_AdminFooter.cshtml" />
+    <Content Include="Views\Administrador\_vListEspecialidad.cshtml" />
+    <Content Include="Views\Administrador\MantenimientoEspecialidades.cshtml" />
+    <Content Include="Views\Administrador\_vListUsuario.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
