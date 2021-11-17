@@ -229,6 +229,21 @@ create proc usp_listar_usuarios
 as
 select*from tb_usuario order by idusuario asc
 go
+
+create proc usp_listar_man_usuarios
+as
+select u.idusuario,u.nombreusu,s.descripcion,u.email,t.descripcion,e.descripcion
+from tb_usuario u
+inner join tb_sexo s
+on u.idsexo = s.idsexo
+inner join tb_tipoCuenta t
+on u.idtipo = t.idtipo
+inner join tb_estado e
+on u.idestado = e.idestado
+where u.idtipo != 1
+order by idusuario asc
+go
+
 -- SP PARA ADMIN
 create proc usp_listar_usuarios_combo
 as
@@ -553,6 +568,17 @@ as
 select*from tb_proveedor order by idproveedor asc
 go
 
+create proc usp_listar_man_proveedores
+as
+select p.idproveedor,p.nombreprov,p.telefonoprov,d.descripcion,e.descripcion
+from tb_proveedor p
+inner join tb_distrito d
+on p.iddistrito = d.iddistrito
+inner join tb_estado e
+on p.idestado = e.idestado
+order by idproveedor asc
+go
+
 create proc usp_listar_proveedores_x_id
 @idprov int
 as
@@ -649,10 +675,13 @@ create proc usp_editar_farmaceutico
 @stock int,
 @precio decimal(11,2),
 @desc varchar(300),
-@proveedor int
+@proveedor int,
+@estado int
 as
-update tb_farmaceutico set fotofarm = @foto, nombrefarm = @nom, stockfarm = @stock, preciofarm = @precio, descripcionfarm = @desc,
-idproveedor = @proveedor where idfarmaceutico = @idfarm
+update tb_farmaceutico set fotofarm = @foto, nombrefarm = @nom, stockfarm = @stock, 
+preciofarm = @precio, descripcionfarm = @desc,
+idproveedor = @proveedor, idestado = @estado
+where idfarmaceutico = @idfarm
 go
 
 create table tb_venta(

@@ -128,7 +128,9 @@
     <Compile Include="DAO\distritoDAO.cs" />
     <Compile Include="DAO\especialidadDAO.cs" />
     <Compile Include="DAO\estadoDAO.cs" />
+    <Compile Include="DAO\farmaceuticoDAO.cs" />
     <Compile Include="DAO\medicoDAO.cs" />
+    <Compile Include="DAO\proveedorDAO.cs" />
     <Compile Include="DAO\sexoDAO.cs" />
     <Compile Include="DAO\tipoCuentaDAO.cs" />
     <Compile Include="DAO\usuarioDAO.cs" />
@@ -144,9 +146,11 @@
     <Compile Include="Models\Farmaceutico.cs" />
     <Compile Include="Models\Medico.cs" />
     <Compile Include="Models\Proveedor.cs" />
+    <Compile Include="Models\ProveedorList1.cs" />
     <Compile Include="Models\Sexo.cs" />
     <Compile Include="Models\TipoCuenta.cs" />
     <Compile Include="Models\Usuario.cs" />
+    <Compile Include="Models\UsuarioList1.cs" />
     <Compile Include="Models\Venta.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -251,10 +255,16 @@
     <Content Include="Views\Administrador\_vListEspecialidad.cshtml" />
     <Content Include="Views\Administrador\MantenimientoEspecialidades.cshtml" />
     <Content Include="Views\Administrador\_vListUsuario.cshtml" />
+    <Content Include="Views\Administrador\MantenimientoUsuarios.cshtml" />
+    <Content Include="Views\Administrador\_vListProveedor.cshtml" />
+    <Content Include="Views\Administrador\MantenimientoProveedores.cshtml" />
+    <Content Include="Views\Administrador\_vListFarmaceutico.cshtml" />
+    <Content Include="Views\Administrador\MantenimientoFarmaceuticos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="IMAGENES\ESPECIALIDADES\" />
+    <Folder Include="IMAGENES\FARMACEUTICOS\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

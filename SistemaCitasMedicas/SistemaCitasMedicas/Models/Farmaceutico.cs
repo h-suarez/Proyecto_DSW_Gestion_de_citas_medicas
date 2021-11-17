@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.ComponentModel.DataAnnotations;
 
 namespace SistemaCitasMedicas.Models
 {
@@ -15,6 +16,6 @@ namespace SistemaCitasMedicas.Models
         public string descripcionfarm { get; set; }
         public int idproveedor { get; set; }
         public int idestado { get; set; }
-        public DateTime fechaReg { get; set; }
+        [DataType(DataType.Date)] public DateTime fechaReg { get; set; }
     }
 }

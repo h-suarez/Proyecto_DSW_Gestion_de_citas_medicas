@@ -21,6 +21,8 @@ namespace SistemaCitasMedicas.Controllers
         tipoCuentaDAO tipos = new tipoCuentaDAO();
         distritoDAO distritos = new distritoDAO();
         estadoDAO estados = new estadoDAO();
+        proveedorDAO proveedores = new proveedorDAO();
+        farmaceuticoDAO farmaceuticos = new farmaceuticoDAO();
 
         /*******************************COMIENZA LAS FUNCIONES DEL PANEL DE CONTROL*********************************/
         public ActionResult HomeAdmin()
@@ -63,12 +65,12 @@ namespace SistemaCitasMedicas.Controllers
         {
             switch (btncrud)
             {
-                case "Registrar": return Agregar(reg,archivo);
-                case "Editar": return Actualizar(reg,archivo);
-                default: return RedirectToAction("Index", new { id = "" });
+                case "Registrar": return AgregarEsp(reg,archivo);
+                case "Editar": return ActualizarEsp(reg,archivo);
+                default: return RedirectToAction("MantenimientoEspecialidades", new { idesp = "" });
             }
         }
-        public ActionResult Agregar(Especialidad reg, HttpPostedFileBase archivo)
+        public ActionResult AgregarEsp(Especialidad reg, HttpPostedFileBase archivo)
         {
             if (archivo == null || archivo.ContentLength <= 0)
             {
@@ -88,7 +90,7 @@ namespace SistemaCitasMedicas.Controllers
             ViewBag.especialidades = especialidades.listarEspecialidades();
             return View(reg);
         }
-        public ActionResult Actualizar(Especialidad reg, HttpPostedFileBase archivo)
+        public ActionResult ActualizarEsp(Especialidad reg, HttpPostedFileBase archivo)
         {
             if (archivo == null || archivo.ContentLength <= 0)
             {
@@ -120,11 +122,209 @@ namespace SistemaCitasMedicas.Controllers
             }
             Usuario reg = usuarios.listado().Where(u => u.idusuario == idusu).FirstOrDefault();
             if (reg == null) reg = new Usuario();
-            ViewBag.sexos = sexos.listadoSexo();
-            ViewBag.tipos = tipos.listadoTipoCuenta();
-            ViewBag.distritos = distritos.listadoDistrito();
-            ViewBag.estados = estados.listadoEstadoCuenta();
+            ViewBag.sexos = new SelectList(sexos.listadoSexo(), "idsexo", "descripcion", reg.idsexo);
+            ViewBag.tipos = new SelectList(tipos.listadoTipoCuenta(), "idtipo", "descripcion", reg.idtipo);
+            ViewBag.distritos = new SelectList(distritos.listadoDistrito(), "iddistrito", "descripcion", reg.iddistrito);
+            ViewBag.estados = new SelectList(estados.listadoEstadoCuenta(), "idestado", "descripcion", reg.idestado);
+            ViewBag.usuarios = usuarios.listadoManUsuarios();
             return View(reg);
         }
+        [HttpPost]public ActionResult MantenimientoUsuarios(string btncrud, Usuario reg)
+        {
+            switch (btncrud)
+            {
+                case "Registrar": return AgregarUsu(reg);
+                case "Actualizar": return ActualizarUsu(reg);
+                default: return RedirectToAction("MantenimientoUsuarios", new { id = "" });
+            }
+        }
+        public ActionResult AgregarUsu(Usuario reg){
+            SqlParameter[] pars =
+            {
+                new SqlParameter(){ParameterName="@dni",Value=reg.dniusu},
+                new SqlParameter(){ParameterName="@nom",Value=reg.nombreusu},
+                new SqlParameter(){ParameterName="@sexo",Value=reg.idsexo},
+                new SqlParameter(){ParameterName="@distrito",Value=reg.iddistrito},
+                new SqlParameter(){ParameterName="@cel",Value=reg.celularusu},
+                new SqlParameter(){ParameterName="@email",Value=reg.email},
+                new SqlParameter(){ParameterName="@clave",Value=reg.clave},
+                new SqlParameter(){ParameterName="@tipo",Value=reg.idtipo},
+                new SqlParameter(){ParameterName="@estado",Value=reg.idestado},
+            };
+            ViewBag.mensaje = usuarios.CRUDUSUCUENTAS("usp_agregar_empleado", pars, 1);
+            ViewBag.sexos = new SelectList(sexos.listadoSexo(), "idsexo", "descripcion", reg.idsexo);
+            ViewBag.tipos = new SelectList(tipos.listadoTipoCuenta(), "idtipo", "descripcion", reg.idtipo);
+            ViewBag.distritos = new SelectList(distritos.listadoDistrito(), "iddistrito", "descripcion", reg.iddistrito);
+            ViewBag.estados = new SelectList(estados.listadoEstadoCuenta(), "idestado", "descripcion", reg.idestado);
+            ViewBag.usuarios = usuarios.listadoManUsuarios();
+            return View(reg);
+        }
+        public ActionResult ActualizarUsu(Usuario reg){
+            SqlParameter[] pars =
+            {
+                new SqlParameter(){ParameterName="@idcli",Value=reg.idusuario},
+                new SqlParameter(){ParameterName="@dni",Value=reg.dniusu},
+                new SqlParameter(){ParameterName="@nom",Value=reg.nombreusu},
+                new SqlParameter(){ParameterName="@sexo",Value=reg.idsexo},
+                new SqlParameter(){ParameterName="@distrito",Value=reg.iddistrito},
+                new SqlParameter(){ParameterName="@cel",Value=reg.celularusu},
+                new SqlParameter(){ParameterName="@email",Value=reg.email},
+                new SqlParameter(){ParameterName="@clave",Value=reg.clave},
+                new SqlParameter(){ParameterName="@tipo",Value=reg.idtipo},
+                new SqlParameter(){ParameterName="@estado",Value=reg.idestado},
+            };
+            ViewBag.mensaje = usuarios.CRUDUSUCUENTAS("usp_editar_empleado", pars, 2);
+            ViewBag.sexos = new SelectList(sexos.listadoSexo(), "idsexo", "descripcion", reg.idsexo);
+            ViewBag.tipos = new SelectList(tipos.listadoTipoCuenta(), "idtipo", "descripcion", reg.idtipo);
+            ViewBag.distritos = new SelectList(distritos.listadoDistrito(), "iddistrito", "descripcion", reg.iddistrito);
+            ViewBag.estados = new SelectList(estados.listadoEstadoCuenta(), "idestado", "descripcion", reg.idestado);
+            ViewBag.usuarios = usuarios.listadoManUsuarios();
+            return View(reg);
+        }
+        /*******************************TERMINA EL CRUD DE USUARIOS*********************************/
+        /*******************************COMIENZA EL CRUD DE PROVEEDORES*********************************/
+        public ActionResult MantenimientoProveedores(int idprov = 0)
+        {
+            Usuario usuario = Session["usuario"] as Usuario;
+            if (usuario == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            Proveedor reg = proveedores.listarProveedores().Where(p => p.idproveedor == idprov).FirstOrDefault();
+            if (reg == null) reg = new Proveedor();
+            ViewBag.distritos = new SelectList(distritos.listadoDistrito(), "iddistrito", "descripcion", reg.iddistrito);
+            ViewBag.estados = new SelectList(estados.listadoEstadoCuenta(), "idestado", "descripcion", reg.idestado);
+            ViewBag.proveedores = proveedores.listadoManProveedor();
+            return View(reg);
+        }
+        [HttpPost]public ActionResult MantenimientoProveedores(string btncrud, Proveedor reg)
+        {
+            switch (btncrud)
+            {
+                case "Registrar": return AgregarProv(reg);
+                case "Actualizar": return ActualizarProv(reg);
+                default: return RedirectToAction("MantenimientoProveedores", new { id = "" });
+            }
+        }
+        public ActionResult AgregarProv(Proveedor reg)
+        {
+            SqlParameter[] pars =
+            {
+                new SqlParameter(){ParameterName="@ruc",Value=reg.rucprov},
+                new SqlParameter(){ParameterName="@nom",Value=reg.nombreprov},
+                new SqlParameter(){ParameterName="@tel",Value=reg.telefonoprov},
+                new SqlParameter(){ParameterName="@rz",Value=reg.razonprov},
+                new SqlParameter(){ParameterName="@distrito",Value=reg.iddistrito},
+                new SqlParameter(){ParameterName="@direccion",Value=reg.direccionprov},
+            };
+            ViewBag.mensaje = proveedores.CRUDPROVEEDOR("usp_agregar_proveedor", pars, 1);
+            ViewBag.distritos = new SelectList(distritos.listadoDistrito(), "iddistrito", "descripcion", reg.iddistrito);
+            ViewBag.estados = new SelectList(estados.listadoEstadoCuenta(), "idestado", "descripcion", reg.idestado);
+            ViewBag.proveedores = proveedores.listadoManProveedor();
+            return View(reg);
+        }
+        public ActionResult ActualizarProv(Proveedor reg)
+        {
+            SqlParameter[] pars =
+            {
+                new SqlParameter(){ParameterName="@idprov",Value=reg.idproveedor},
+                new SqlParameter(){ParameterName="@ruc",Value=reg.rucprov},
+                new SqlParameter(){ParameterName="@nom",Value=reg.nombreprov},
+                new SqlParameter(){ParameterName="@tel",Value=reg.telefonoprov},
+                new SqlParameter(){ParameterName="@rz",Value=reg.razonprov},
+                new SqlParameter(){ParameterName="@distrito",Value=reg.iddistrito},
+                new SqlParameter(){ParameterName="@direccion",Value=reg.direccionprov},
+                new SqlParameter(){ParameterName="@estado",Value=reg.idestado},
+            };
+            ViewBag.mensaje = proveedores.CRUDPROVEEDOR("usp_editar_proveedor", pars, 2);
+            ViewBag.distritos = new SelectList(distritos.listadoDistrito(), "iddistrito", "descripcion", reg.iddistrito);
+            ViewBag.estados = new SelectList(estados.listadoEstadoCuenta(), "idestado", "descripcion", reg.idestado);
+            ViewBag.proveedores = proveedores.listadoManProveedor();
+            return View(reg);
+        }
+        /*******************************TERMINA EL CRUD DE PROVEEDORES*********************************/
+        /*******************************COMIENZA EL CRUD DE FARMACEUTICOS*********************************/
+        public ActionResult MantenimientoFarmaceuticos(int idfarm = 0)
+        {
+            Usuario usuario = Session["usuario"] as Usuario;
+            if (usuario == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            Farmaceutico reg = farmaceuticos.listarFarmaceuticos().Where(p => p.idfarmaceutico == idfarm).FirstOrDefault();
+            if (reg == null) reg = new Farmaceutico();
+            ViewBag.proveedores = new SelectList(proveedores.listarProveedores(), "idproveedor", "nombreprov", reg.idproveedor);
+            ViewBag.estados = new SelectList(estados.listadoEstadoCuenta(), "idestado", "descripcion", reg.idestado);
+            ViewBag.farmaceuticos = farmaceuticos.listarFarmaceuticos();
+            return View(reg);
+        }
+        [HttpPost]
+        public ActionResult MantenimientoFarmaceuticos(string btncrud, Farmaceutico reg, HttpPostedFileBase archivo)
+        {
+            switch (btncrud)
+            {
+                case "Registrar": return AgregarEsp(reg, archivo);
+                case "Editar": return ActualizarEsp(reg, archivo);
+                default: return RedirectToAction("MantenimientoFarmaceuticos", new { idfarm = "" });
+            }
+        }
+        public ActionResult AgregarEsp(Farmaceutico reg, HttpPostedFileBase archivo)
+        {
+            if (archivo == null || archivo.ContentLength <= 0)
+            {
+                ViewBag.mensaje = "Seleccione una imagen";
+                ViewBag.proveedores = new SelectList(proveedores.listarProveedores(), "idproveedor", "nombreprov", reg.idproveedor);
+                ViewBag.estados = new SelectList(estados.listadoEstadoCuenta(), "idestado", "descripcion", reg.idestado);
+                ViewBag.farmaceuticos = farmaceuticos.listarFarmaceuticos();
+                return View(reg);
+            }
+            string ruta = "~/IMAGENES/FARMACEUTICOS/" + System.IO.Path.GetFileName(archivo.FileName);
+            archivo.SaveAs(Server.MapPath(ruta));
+            SqlParameter[] pars =
+            {
+                new SqlParameter(){ParameterName="@foto",Value=ruta},
+                new SqlParameter(){ParameterName="@nom",Value=reg.nombrefarm},
+                new SqlParameter(){ParameterName="@stock",Value=reg.stockfarm},
+                new SqlParameter(){ParameterName="@precio",Value=reg.preciofarm},
+                new SqlParameter(){ParameterName="@desc",Value=reg.descripcionfarm},
+                new SqlParameter(){ParameterName="@proveedor",Value=reg.idproveedor},
+            };
+            ViewBag.mensaje = farmaceuticos.CRUDFARMACEUTICOS("usp_agregar_farmaceutico", pars, 1);
+            ViewBag.proveedores = new SelectList(proveedores.listarProveedores(), "idproveedor", "nombreprov", reg.idproveedor);
+            ViewBag.estados = new SelectList(estados.listadoEstadoCuenta(), "idestado", "descripcion", reg.idestado);
+            ViewBag.farmaceuticos = farmaceuticos.listarFarmaceuticos();
+            return View(reg);
+        }
+        public ActionResult ActualizarEsp(Farmaceutico reg, HttpPostedFileBase archivo)
+        {
+            if (archivo == null || archivo.ContentLength <= 0)
+            {
+                ViewBag.mensaje = "Seleccione una imagen";
+                ViewBag.proveedores = new SelectList(proveedores.listarProveedores(), "idproveedor", "nombreprov", reg.idproveedor);
+                ViewBag.estados = new SelectList(estados.listadoEstadoCuenta(), "idestado", "descripcion", reg.idestado);
+                ViewBag.farmaceuticos = farmaceuticos.listarFarmaceuticos();
+                return View(reg);
+            }
+            string ruta = "~/IMAGENES/FARMACEUTICOS/" + System.IO.Path.GetFileName(archivo.FileName);
+            archivo.SaveAs(Server.MapPath(ruta));
+            SqlParameter[] pars =
+            {
+                new SqlParameter(){ParameterName="@idfarm",Value=reg.idfarmaceutico},
+                new SqlParameter(){ParameterName="@foto",Value=ruta},
+                new SqlParameter(){ParameterName="@nom",Value=reg.nombrefarm},
+                new SqlParameter(){ParameterName="@stock",Value=reg.stockfarm},
+                new SqlParameter(){ParameterName="@precio",Value=reg.preciofarm},
+                new SqlParameter(){ParameterName="@desc",Value=reg.descripcionfarm},
+                new SqlParameter(){ParameterName="@proveedor",Value=reg.idproveedor},
+                new SqlParameter(){ParameterName="@estado",Value=reg.idestado},
+            };
+            ViewBag.mensaje = farmaceuticos.CRUDFARMACEUTICOS("usp_editar_farmaceutico", pars, 2);
+            ViewBag.proveedores = new SelectList(proveedores.listarProveedores(), "idproveedor", "nombreprov", reg.idproveedor);
+            ViewBag.estados = new SelectList(estados.listadoEstadoCuenta(), "idestado", "descripcion", reg.idestado);
+            ViewBag.farmaceuticos = farmaceuticos.listarFarmaceuticos();
+            return View(reg);
+        }
+        /*******************************TERMINA EL CRUD DE FARMACEUTICOS*********************************/
+
     }
 }

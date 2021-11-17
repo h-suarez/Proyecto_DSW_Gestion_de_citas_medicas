@@ -1,0 +1,126 @@
+﻿@model SistemaCitasMedicas.Models.Farmaceutico
+@using SistemaCitasMedicas.Models
+
+@{
+    ViewBag.Title = "MantenimientoFarmaceuticos";
+    var usuario = (Usuario)Session["usuario"];
+}
+
+<body class="sb-nav-fixed">
+    @Html.Partial("_AdminMenuSuperior")
+    <div id="layoutSidenav">
+        @Html.Partial("_AdminMenu")
+        <div id="layoutSidenav_content">
+            <main class="container-md">
+                @using (Html.BeginForm("MantenimientoFarmaceuticos", "Administrador", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-horizontal">
+                        <h4 class="pt-3 text-secondary text-uppercase">Mantenimiento Farmaceuticos</h4>
+                        <hr />
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="card">
+                            <h4 class="text-center font-monospace fw-bold  card-header">Formulario del farmaceutico</h4>
+                            <div class="m-3">
+                                <div class="row g-3 mb-3">
+                                    <div class="col-md-6" hidden>
+                                        <label class="form-label">ID Farmaceutico</label>
+                                        <div class="">
+                                            @Html.EditorFor(model => model.idfarmaceutico, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.idfarmaceutico, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label">Imagen</label>
+                                        <div class="">
+                                            @Html.TextBox("archivo", "", new { type = "file", accept = "image/*", @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model.fotofarm, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label">Nombre</label>
+                                        <div class="">
+                                            @Html.EditorFor(model => model.nombrefarm, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.nombrefarm, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row g-3 mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Stock</label>
+                                        <div class="">
+                                            @Html.EditorFor(model => model.stockfarm, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.stockfarm, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label">Precio</label>
+                                        <div class="">
+                                            @Html.EditorFor(model => model.preciofarm, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.preciofarm, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row g-3 mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Descripción</label>
+                                        <div class="">
+                                            @Html.EditorFor(model => model.descripcionfarm, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.descripcionfarm, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label">Proveedor</label>
+                                        <div class="">
+                                            @Html.DropDownList("idproveedor", ViewBag.proveedores as SelectList, new { @class = "form-select" })
+                                            @Html.ValidationMessageFor(model => model.idproveedor, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row g-3 mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Estado de farmaceutico</label>
+                                        <div class="">
+                                            @Html.DropDownList("idestado", ViewBag.estados as SelectList, new { @class = "form-select" })
+                                            @Html.ValidationMessageFor(model => model.idestado, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label">Fecha de registro</label>
+                                        <div class="">
+                                            @Html.EditorFor(model => model.fechaReg, new { htmlAttributes = new { @class = "form-control", type = "datetime", disabled = "" } })
+                                            @Html.ValidationMessageFor(model => model.fechaReg, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-4">
+                                    <div class="d-flex justify-content-around">
+                                        @Html.ActionLink("Limpiar", "MantenimientoFarmaceuticos", new { idfarm = "" }, new { @class = "btn btn-secondary text-uppercase fw-bold" })
+                                        <input type="submit" name="btncrud" value="Registrar" class="btn btn-success text-uppercase fw-bold" />
+                                        <input type="submit" name="btncrud" value="Editar" class="btn btn-primary text-uppercase fw-bold" />
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                }
+                <div>
+                    @ViewBag.mensaje
+                </div>
+
+                <div>
+                    @Html.Partial("_vListFarmaceutico", ViewBag.farmaceuticos as IEnumerable<Farmaceutico>)
+                </div>
+            </main>
+            @Html.Partial("_AdminFooter")
+        </div>
+    </div>
+</body>

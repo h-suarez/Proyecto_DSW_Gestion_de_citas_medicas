@@ -1,0 +1,155 @@
+﻿@model SistemaCitasMedicas.Models.Usuario
+@using SistemaCitasMedicas.Models
+
+@{
+    ViewBag.Title = "MantenimientoUsuarios";
+    var usuario = (Usuario)Session["usuario"];
+}
+
+<body class="sb-nav-fixed">
+    @Html.Partial("_AdminMenuSuperior")
+    <div id="layoutSidenav">
+        @Html.Partial("_AdminMenu")
+        <div id="layoutSidenav_content">
+            <main class="container-md">
+                @using (Html.BeginForm()){
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-horizontal">
+                        <h4 class="pt-3 text-secondary text-uppercase">Mantenimiento Usuarios</h4>
+                        <hr />
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="card">
+                            <h4 class="text-center font-monospace fw-bold  card-header">Formulario de usuario</h4>
+                            <div class="m-3">
+                                <div class="row g-3 mb-3">
+                                    <div class="col-md-6" hidden>
+                                        <label class="form-label">ID Usuario</label>
+                                        <div class="">
+                                            @Html.EditorFor(model => model.idusuario, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.idusuario, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label">DNI</label>
+                                        <div class="">
+                                            @Html.EditorFor(model => model.dniusu, new { htmlAttributes = new { @class = "form-control", placeholder = "Ingrese el DNI" } })
+                                            @Html.ValidationMessageFor(model => model.dniusu, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label">Nombre</label>
+                                        <div class="">
+                                            @Html.EditorFor(model => model.nombreusu, new { htmlAttributes = new { @class = "form-control", placeholder = "Ingrese el nombre" } })
+                                            @Html.ValidationMessageFor(model => model.nombreusu, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row g-3 mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Sexo</label>
+                                        <div class="">
+                                            @Html.DropDownList("idsexo", ViewBag.sexos as SelectList, new { @class = "form-select" })
+                                            @Html.ValidationMessageFor(model => model.idsexo, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label">Distrito</label>
+                                        <div class="">
+                                            @Html.DropDownList("iddistrito", ViewBag.distritos as SelectList, new { @class = "form-select" })
+                                            @Html.ValidationMessageFor(model => model.iddistrito, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row g-3 mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Celular</label>
+                                        <div class="">
+                                            @Html.EditorFor(model => model.celularusu, new { htmlAttributes = new { @class = "form-control", placeholder = "Ingrese el N° celular" } })
+                                            @Html.ValidationMessageFor(model => model.celularusu, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label">Correo</label>
+                                        <div class="">
+                                            @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control", placeholder = "Ingrese el correo" } })
+                                            @Html.ValidationMessageFor(model => model.email, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row g-3 mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Clave</label>
+                                        <div class="input-group">
+                                            @Html.EditorFor(model => model.clave, new { htmlAttributes = new { @class = "form-control", type = "password", id = "clave", placeholder = "Ingrese la clave" } })
+                                            <button class="btn btn-dark" onclick="mostrarContrasena()" type="button">
+                                                <i class="bi bi-eye-slash-fill" id="icono"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label">Fecha de registro</label>
+                                        <div class="">
+                                            @Html.EditorFor(model => model.fechaRegusu, new { htmlAttributes = new { @class = "form-control", type = "datetime", disabled="" } })
+                                            @Html.ValidationMessageFor(model => model.fechaRegusu, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Tipo de cuenta</label>
+                                        <div class="">
+                                            @Html.DropDownList("idtipo", ViewBag.tipos as SelectList, new { @class = "form-select" })
+                                            @Html.ValidationMessageFor(model => model.idtipo, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label">Estado de cuenta</label>
+                                        <div class="">
+                                            @Html.DropDownList("idestado", ViewBag.estados as SelectList, new { @class = "form-select" })
+                                            @Html.ValidationMessageFor(model => model.idestado, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-5">
+                                    <div class="d-flex justify-content-around">
+                                        @Html.ActionLink("Limpiar", "MantenimientoUsuarios", new { idusu = "" }, new { @class = "btn btn-secondary text-uppercase fw-bold" })
+                                        <input type="submit" name="btncrud" value="Registrar" class="btn btn-success text-uppercase fw-bold" />
+                                        <input type="submit" name="btncrud" value="Actualizar" class="btn btn-primary text-uppercase fw-bold" />
+                                    </div>
+                                </div>
+
+                                </div>
+                            </div>
+                    </div>
+                }
+                <div>
+                    @ViewBag.mensaje
+                </div>
+                <div>
+                    @Html.Partial("_vListUsuario", ViewBag.usuarios as IEnumerable<UsuarioList1>)
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+
+<script>
+    function mostrarContrasena() {
+        var tipo = document.getElementById("clave");
+        var icono = document.getElementById("icono");
+        if (tipo.type == "password" && icono.className == "bi bi-eye-slash-fill") {
+            tipo.type = "text";
+            icono.classList = "bi bi-eye-fill";
+        } else {
+            tipo.type = "password";
+            icono.classList = "bi bi-eye-slash-fill";
+        }
+    }
+</script>

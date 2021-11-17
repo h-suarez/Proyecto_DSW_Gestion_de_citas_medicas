@@ -1,0 +1,50 @@
+﻿@model IEnumerable<SistemaCitasMedicas.Models.ProveedorList1>
+<div class="card-body mt-3">
+    <table class="table" id="datatablesSimple">
+        <thead class="table-dark mt-0 pt-0">
+            <tr>
+                <th>
+                    Id
+                </th>
+                <th>
+                    Nombre
+                </th>
+                <th>
+                    Telefono
+                </th>
+                <th>
+                    Distrito
+                </th>
+                <th>
+                    Estado
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.idproveedor)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.nombreprov)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.telefonoprov)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.distrito)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.estado)
+                </td>
+                <td>
+                    @Html.ActionLink("Seleccione", "MantenimientoProveedores", new { idprov=item.idproveedor }, new { @class = "btn btn-link text-decoration-none p-0" })
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>

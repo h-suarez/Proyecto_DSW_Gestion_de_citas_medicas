@@ -1,0 +1,51 @@
+﻿@model IEnumerable<SistemaCitasMedicas.Models.Farmaceutico>
+
+<div class="card-body mt-3">
+    <table class="table" id="datatablesSimple">
+        <thead class="table-dark mt-0 pt-0">
+            <tr>
+                <th>
+                    Id
+                </th>
+                <th>
+                    Imagen
+                </th>
+                <th>
+                    Nombre
+                </th>
+                <th>
+                    Stock
+                </th>
+                <th>
+                    Precio
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.idfarmaceutico)
+                </td>
+                <td class="d-flex justify-content-center">
+                    <img src="@Url.Content(item.fotofarm)" style="width:100px;" alt="Img Farmaceutico" />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.nombrefarm)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.stockfarm)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.preciofarm)
+                </td>
+                <td class="text-center">
+                    @Html.ActionLink("Seleccione", "MantenimientoFarmaceuticos", new { idfarm = item.idfarmaceutico }, new { @class = "btn btn-link text-decoration-none p-0" })
+                </td>
+            </tr>
+        }
+
+    </table>
+
+</div>

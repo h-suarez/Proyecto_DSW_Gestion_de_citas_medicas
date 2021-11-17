@@ -1,0 +1,121 @@
+﻿@model SistemaCitasMedicas.Models.Proveedor
+@using SistemaCitasMedicas.Models
+
+@{
+    ViewBag.Title = "MantenimientoProveedores";
+    var usuario = (Usuario)Session["usuario"];
+}
+
+<body class="sb-nav-fixed">
+    @Html.Partial("_AdminMenuSuperior")
+    <div id="layoutSidenav">
+        @Html.Partial("_AdminMenu")
+        <div id="layoutSidenav_content">
+            <main class="container-md">
+                @using (Html.BeginForm()){
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-horizontal">
+                        <h4 class="pt-3 text-secondary text-uppercase">Mantenimiento Proveedores</h4>
+                        <hr />
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="card">
+                            <h4 class="text-center font-monospace fw-bold  card-header">Formulario de proveedor</h4>
+                            <div class="m-3">
+                                <div class="row g-3 mb-3">
+                                    <div class="col-md-6" hidden>
+                                        <label class="form-label">ID Proveedor</label>
+                                        <div class="">
+                                            @Html.EditorFor(model => model.idproveedor, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.idproveedor, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label">RUC</label>
+                                        <div class="">
+                                            @Html.EditorFor(model => model.rucprov, new { htmlAttributes = new { @class = "form-control", placeholder="Ingrese el RUC" } })
+                                            @Html.ValidationMessageFor(model => model.rucprov, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label">Nombre</label>
+                                        <div class="">
+                                            @Html.EditorFor(model => model.nombreprov, new { htmlAttributes = new { @class = "form-control", placeholder = "Ingrese nombre de proveedor" } })
+                                            @Html.ValidationMessageFor(model => model.nombreprov, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row g-3 mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Telefono</label>
+                                        <div class="">
+                                            @Html.EditorFor(model => model.telefonoprov, new { htmlAttributes = new { @class = "form-control", placeholder = "Ingrese el telefono" } })
+                                            @Html.ValidationMessageFor(model => model.telefonoprov, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label">Razón Social</label>
+                                        <div class="">
+                                            @Html.EditorFor(model => model.razonprov, new { htmlAttributes = new { @class = "form-control", placeholder = "Ingrese Razón Social" } })
+                                            @Html.ValidationMessageFor(model => model.razonprov, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row g-3 mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Distrito</label>
+                                        <div class="">
+                                            @Html.DropDownList("iddistrito", ViewBag.distritos as SelectList, new { @class = "form-select" })
+                                            @Html.ValidationMessageFor(model => model.iddistrito, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label">Dirección</label>
+                                        <div class="">
+                                            @Html.EditorFor(model => model.direccionprov, new { htmlAttributes = new { @class = "form-control", placeholder = "Ingrese dirección de proveedor" } })
+                                            @Html.ValidationMessageFor(model => model.direccionprov, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row g-3 mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Fecha de registro</label>
+                                        <div class="">
+                                            @Html.EditorFor(model => model.fechaRegprov, new { htmlAttributes = new { @class = "form-control", type = "datetime", disabled = "" } })
+                                            @Html.ValidationMessageFor(model => model.fechaRegprov, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label">Estado de proveedor</label>
+                                        <div class="">
+                                            @Html.DropDownList("idestado", ViewBag.estados as SelectList, new { @class = "form-select" })
+                                            @Html.ValidationMessageFor(model => model.idestado, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-5">
+                                    <div class="d-flex justify-content-around">
+                                        @Html.ActionLink("Limpiar", "MantenimientoProveedores", new { idprov = "" }, new { @class = "btn btn-secondary text-uppercase fw-bold" })
+                                        <input type="submit" name="btncrud" value="Registrar" class="btn btn-success text-uppercase fw-bold" />
+                                        <input type="submit" name="btncrud" value="Actualizar" class="btn btn-primary text-uppercase fw-bold" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                <div>
+                    @ViewBag.mensaje
+                </div>
+                <div>
+                    @Html.Partial("_vListProveedor", ViewBag.proveedores as IEnumerable<ProveedorList1>)
+                </div>
+            </main>
+        </div>
+    </div>
+</body>

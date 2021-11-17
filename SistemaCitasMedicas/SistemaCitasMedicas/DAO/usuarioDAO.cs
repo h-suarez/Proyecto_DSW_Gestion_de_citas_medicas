@@ -144,7 +144,7 @@ namespace SistemaCitasMedicas.DAO
             }
             return lista;
         }
-        public string registrarUsuEmpleado(string sp, SqlParameter[] pars = null, int op = 0)
+        public string CRUDUSUCUENTAS(string sp, SqlParameter[] pars = null, int op = 0)
         {
             cn = new conexionDAO();
             string mensaje = "";
@@ -167,6 +167,35 @@ namespace SistemaCitasMedicas.DAO
                 cn.getcn.Close();
             }
             return mensaje;
+        }
+        public IEnumerable<UsuarioList1> listadoManUsuarios()
+        {
+            List<UsuarioList1> lista = new List<UsuarioList1>();
+            cn = new conexionDAO();
+            using (cn.getcn)
+            {
+                SqlCommand cmd = new SqlCommand(
+                    "exec usp_listar_man_usuarios",
+                    cn.getcn
+                );
+                cn.getcn.Open();
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    lista.Add(new UsuarioList1
+                    {
+                        idusuario = (int)dr[0],
+                        nombreusu = (string)dr[1],
+                        sexo = (string)dr[2],
+                        email = (string)dr[3],
+                        tipo = (string)dr[4],
+                        estado = (string)dr[5],
+                    });
+                }
+                dr.Close();
+                cn.getcn.Close();
+            }
+            return lista;
         }
     }
 }
