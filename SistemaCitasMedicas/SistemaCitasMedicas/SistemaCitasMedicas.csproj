@@ -139,12 +139,14 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Cita.cs" />
+    <Compile Include="Models\CitaList1.cs" />
     <Compile Include="Models\DetalleVenta.cs" />
     <Compile Include="Models\Distrito.cs" />
     <Compile Include="Models\Especialidad.cs" />
     <Compile Include="Models\Estado.cs" />
     <Compile Include="Models\Farmaceutico.cs" />
     <Compile Include="Models\Medico.cs" />
+    <Compile Include="Models\MedicoList1.cs" />
     <Compile Include="Models\Proveedor.cs" />
     <Compile Include="Models\ProveedorList1.cs" />
     <Compile Include="Models\Sexo.cs" />
@@ -260,11 +262,16 @@
     <Content Include="Views\Administrador\MantenimientoProveedores.cshtml" />
     <Content Include="Views\Administrador\_vListFarmaceutico.cshtml" />
     <Content Include="Views\Administrador\MantenimientoFarmaceuticos.cshtml" />
+    <Content Include="Views\Administrador\_vListMedico.cshtml" />
+    <Content Include="Views\Administrador\MantenimientoMedicos.cshtml" />
+    <Content Include="Views\Administrador\_vListCita.cshtml" />
+    <Content Include="Views\Administrador\ConsultaCitasMedicas.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="IMAGENES\ESPECIALIDADES\" />
     <Folder Include="IMAGENES\FARMACEUTICOS\" />
+    <Folder Include="IMAGENES\MEDICOS\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -1,0 +1,51 @@
+﻿@model IEnumerable<SistemaCitasMedicas.Models.CitaList1>
+
+<div class="card-body mt-3">
+    <table class="table" id="datatablesSimple">
+        <thead class="table-dark mt-0 pt-0">
+            <tr>
+                <th>
+                    Id
+                </th>
+                <th>
+                    Paciente
+                </th>
+                <th>
+                    Fecha de reserva
+                </th>
+                <th>
+                    Hora de cita
+                </th>
+                <th>
+                    Estado de cita
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.idcita)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.paciente)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.fechacita)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.horacita)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.estado)
+                </td>
+                <td>
+                    @Html.ActionLink("Seleccione", "ConsultaCitasMedicas", new { idcit = item.idcita }, new { @class = "btn btn-link text-decoration-none p-0" })
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>

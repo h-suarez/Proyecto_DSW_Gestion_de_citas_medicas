@@ -52,6 +52,36 @@ namespace SistemaCitasMedicas.DAO
             return lista;
         }
 
+        public IEnumerable<UsuarioList1> listadoCombo()
+        {
+            List<UsuarioList1> lista = new List<UsuarioList1>();
+            cn = new conexionDAO();
+            using (cn.getcn)
+            {
+                SqlCommand cmd = new SqlCommand(
+                    "exec usp_listar_man_usuarios",
+                    cn.getcn
+                );
+                cn.getcn.Open();
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    lista.Add(new UsuarioList1
+                    {
+                        idusuario = (int)dr[0],
+                        nombreusu = (string)dr[1],
+                        sexo = (string)dr[2],
+                        email = "Nombre: " + (string)dr[1] + ", Sexo: " + dr[2] + ", Correo:" + dr[3] +", Tipo cuenta: " + dr[4] + " Estado cuenta: " + dr[5],
+                        tipo = (string)dr[4],
+                        estado = (string)dr[5],
+                    });
+                }
+                dr.Close();
+                cn.getcn.Close();
+            }
+            return lista;
+        }
+
         public string registrarUsuPaciente(string sp, SqlParameter[] pars = null, int op = 0)
         {
             cn = new conexionDAO();

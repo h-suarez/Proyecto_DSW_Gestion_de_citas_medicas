@@ -193,7 +193,7 @@ namespace SistemaCitasMedicas.Controllers
             Proveedor reg = proveedores.listarProveedores().Where(p => p.idproveedor == idprov).FirstOrDefault();
             if (reg == null) reg = new Proveedor();
             ViewBag.distritos = new SelectList(distritos.listadoDistrito(), "iddistrito", "descripcion", reg.iddistrito);
-            ViewBag.estados = new SelectList(estados.listadoEstadoCuenta(), "idestado", "descripcion", reg.idestado);
+            ViewBag.estados = new SelectList(estados.listadoEstadoProveedor(), "idestado", "descripcion", reg.idestado);
             ViewBag.proveedores = proveedores.listadoManProveedor();
             return View(reg);
         }
@@ -219,7 +219,7 @@ namespace SistemaCitasMedicas.Controllers
             };
             ViewBag.mensaje = proveedores.CRUDPROVEEDOR("usp_agregar_proveedor", pars, 1);
             ViewBag.distritos = new SelectList(distritos.listadoDistrito(), "iddistrito", "descripcion", reg.iddistrito);
-            ViewBag.estados = new SelectList(estados.listadoEstadoCuenta(), "idestado", "descripcion", reg.idestado);
+            ViewBag.estados = new SelectList(estados.listadoEstadoProveedor(), "idestado", "descripcion", reg.idestado);
             ViewBag.proveedores = proveedores.listadoManProveedor();
             return View(reg);
         }
@@ -238,7 +238,7 @@ namespace SistemaCitasMedicas.Controllers
             };
             ViewBag.mensaje = proveedores.CRUDPROVEEDOR("usp_editar_proveedor", pars, 2);
             ViewBag.distritos = new SelectList(distritos.listadoDistrito(), "iddistrito", "descripcion", reg.iddistrito);
-            ViewBag.estados = new SelectList(estados.listadoEstadoCuenta(), "idestado", "descripcion", reg.idestado);
+            ViewBag.estados = new SelectList(estados.listadoEstadoProveedor(), "idestado", "descripcion", reg.idestado);
             ViewBag.proveedores = proveedores.listadoManProveedor();
             return View(reg);
         }
@@ -254,27 +254,26 @@ namespace SistemaCitasMedicas.Controllers
             Farmaceutico reg = farmaceuticos.listarFarmaceuticos().Where(p => p.idfarmaceutico == idfarm).FirstOrDefault();
             if (reg == null) reg = new Farmaceutico();
             ViewBag.proveedores = new SelectList(proveedores.listarProveedores(), "idproveedor", "nombreprov", reg.idproveedor);
-            ViewBag.estados = new SelectList(estados.listadoEstadoCuenta(), "idestado", "descripcion", reg.idestado);
+            ViewBag.estados = new SelectList(estados.listadoEstadoFarmaceutico(), "idestado", "descripcion", reg.idestado);
             ViewBag.farmaceuticos = farmaceuticos.listarFarmaceuticos();
             return View(reg);
         }
-        [HttpPost]
-        public ActionResult MantenimientoFarmaceuticos(string btncrud, Farmaceutico reg, HttpPostedFileBase archivo)
+        [HttpPost]public ActionResult MantenimientoFarmaceuticos(string btncrud, Farmaceutico reg, HttpPostedFileBase archivo)
         {
             switch (btncrud)
             {
-                case "Registrar": return AgregarEsp(reg, archivo);
-                case "Editar": return ActualizarEsp(reg, archivo);
+                case "Registrar": return AgregarFarm(reg, archivo);
+                case "Editar": return ActualizarFarm(reg, archivo);
                 default: return RedirectToAction("MantenimientoFarmaceuticos", new { idfarm = "" });
             }
         }
-        public ActionResult AgregarEsp(Farmaceutico reg, HttpPostedFileBase archivo)
+        public ActionResult AgregarFarm(Farmaceutico reg, HttpPostedFileBase archivo)
         {
             if (archivo == null || archivo.ContentLength <= 0)
             {
                 ViewBag.mensaje = "Seleccione una imagen";
                 ViewBag.proveedores = new SelectList(proveedores.listarProveedores(), "idproveedor", "nombreprov", reg.idproveedor);
-                ViewBag.estados = new SelectList(estados.listadoEstadoCuenta(), "idestado", "descripcion", reg.idestado);
+                ViewBag.estados = new SelectList(estados.listadoEstadoFarmaceutico(), "idestado", "descripcion", reg.idestado);
                 ViewBag.farmaceuticos = farmaceuticos.listarFarmaceuticos();
                 return View(reg);
             }
@@ -291,17 +290,17 @@ namespace SistemaCitasMedicas.Controllers
             };
             ViewBag.mensaje = farmaceuticos.CRUDFARMACEUTICOS("usp_agregar_farmaceutico", pars, 1);
             ViewBag.proveedores = new SelectList(proveedores.listarProveedores(), "idproveedor", "nombreprov", reg.idproveedor);
-            ViewBag.estados = new SelectList(estados.listadoEstadoCuenta(), "idestado", "descripcion", reg.idestado);
+            ViewBag.estados = new SelectList(estados.listadoEstadoFarmaceutico(), "idestado", "descripcion", reg.idestado);
             ViewBag.farmaceuticos = farmaceuticos.listarFarmaceuticos();
             return View(reg);
         }
-        public ActionResult ActualizarEsp(Farmaceutico reg, HttpPostedFileBase archivo)
+        public ActionResult ActualizarFarm(Farmaceutico reg, HttpPostedFileBase archivo)
         {
             if (archivo == null || archivo.ContentLength <= 0)
             {
                 ViewBag.mensaje = "Seleccione una imagen";
                 ViewBag.proveedores = new SelectList(proveedores.listarProveedores(), "idproveedor", "nombreprov", reg.idproveedor);
-                ViewBag.estados = new SelectList(estados.listadoEstadoCuenta(), "idestado", "descripcion", reg.idestado);
+                ViewBag.estados = new SelectList(estados.listadoEstadoFarmaceutico(), "idestado", "descripcion", reg.idestado);
                 ViewBag.farmaceuticos = farmaceuticos.listarFarmaceuticos();
                 return View(reg);
             }
@@ -320,11 +319,135 @@ namespace SistemaCitasMedicas.Controllers
             };
             ViewBag.mensaje = farmaceuticos.CRUDFARMACEUTICOS("usp_editar_farmaceutico", pars, 2);
             ViewBag.proveedores = new SelectList(proveedores.listarProveedores(), "idproveedor", "nombreprov", reg.idproveedor);
-            ViewBag.estados = new SelectList(estados.listadoEstadoCuenta(), "idestado", "descripcion", reg.idestado);
+            ViewBag.estados = new SelectList(estados.listadoEstadoFarmaceutico(), "idestado", "descripcion", reg.idestado);
             ViewBag.farmaceuticos = farmaceuticos.listarFarmaceuticos();
             return View(reg);
         }
         /*******************************TERMINA EL CRUD DE FARMACEUTICOS*********************************/
+        /*******************************COMIENZA EL CRUD DE MEDICOS*********************************/
+        public ActionResult MantenimientoMedicos(int idmed = 0)
+        {
+            Usuario usuario = Session["usuario"] as Usuario;
+            if (usuario == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            Medico reg = medicos.listadoMedicos().Where(m => m.idmedico == idmed).FirstOrDefault();
+            if (reg == null) reg = new Medico();
+            ViewBag.especialidades = new SelectList(especialidades.listarEspecialidades(), "idespecialidad", "nombreesp", reg.idespecialidad);
+            ViewBag.cuentas = new SelectList(usuarios.listadoCombo().Where(u => u.tipo == "Paciente" || u.tipo == "Medico"), "idusuario", "email", reg.idcuenta);
+            ViewBag.medicos = medicos.listadoManteniminetoMedicos();
+            return View(reg);
+        }
+        [HttpPost]public ActionResult MantenimientoMedicos(string btncrud, Medico reg, HttpPostedFileBase archivo)
+        {
+            switch (btncrud)
+            {
+                case "Registrar": return AgregarMed(reg, archivo);
+                case "Editar": return ActualizarMed(reg, archivo);
+                default: return RedirectToAction("MantenimientoMedicos", new { idmed = "" });
+            }
+        }
+        public ActionResult AgregarMed(Medico reg, HttpPostedFileBase archivo)
+        {
+            if (archivo == null || archivo.ContentLength <= 0)
+            {
+                ViewBag.mensaje = "Seleccione una imagen";
+                ViewBag.especialidades = new SelectList(especialidades.listarEspecialidades(), "idespecialidad", "nombreesp", reg.idespecialidad);
+                ViewBag.cuentas = new SelectList(usuarios.listadoCombo().Where(u => u.tipo == "Paciente" || u.tipo == "Medico"), "idusuario", "email", reg.idcuenta);
+                ViewBag.medicos = medicos.listadoManteniminetoMedicos();
+                return View(reg);
+            }
+            string ruta = "~/IMAGENES/MEDICOS/" + System.IO.Path.GetFileName(archivo.FileName);
+            archivo.SaveAs(Server.MapPath(ruta));
+            SqlParameter[] pars =
+            {
+                new SqlParameter(){ParameterName="@img",Value=ruta},
+                new SqlParameter(){ParameterName="@especialidad",Value=reg.idespecialidad},
+                new SqlParameter(){ParameterName="@horaini",Value=reg.horaini},
+                new SqlParameter(){ParameterName="@horafin",Value=reg.horafin},
+                new SqlParameter(){ParameterName="@cuenta",Value=reg.idcuenta},
+            };
+            ViewBag.mensaje = medicos.CRUDMEDICO("usp_agregar_medico", pars, 1);
+            ViewBag.especialidades = new SelectList(especialidades.listarEspecialidades(), "idespecialidad", "nombreesp", reg.idespecialidad);
+            ViewBag.cuentas = new SelectList(usuarios.listadoCombo().Where(u => u.tipo == "Paciente" || u.tipo == "Medico"), "idusuario", "email", reg.idcuenta);
+            ViewBag.medicos = medicos.listadoManteniminetoMedicos();
+            return View(reg);
+        }
+        public ActionResult ActualizarMed(Medico reg, HttpPostedFileBase archivo)
+        {
+            if (archivo == null || archivo.ContentLength <= 0)
+            {
+                ViewBag.mensaje = "Seleccione una imagen";
+                ViewBag.especialidades = new SelectList(especialidades.listarEspecialidades(), "idespecialidad", "nombreesp", reg.idespecialidad);
+                ViewBag.cuentas = new SelectList(usuarios.listadoCombo().Where(u => u.tipo == "Paciente" || u.tipo == "Medico"), "idusuario", "email", reg.idcuenta);
+                ViewBag.medicos = medicos.listadoManteniminetoMedicos();
+                return View(reg);
+            }
+            string ruta = "~/IMAGENES/MEDICOS/" + System.IO.Path.GetFileName(archivo.FileName);
+            archivo.SaveAs(Server.MapPath(ruta));
+            SqlParameter[] pars =
+            {
+                new SqlParameter(){ParameterName="@idmed",Value=reg.idmedico},
+                new SqlParameter(){ParameterName="@img",Value=ruta},
+                new SqlParameter(){ParameterName="@especialidad",Value=reg.idespecialidad},
+                new SqlParameter(){ParameterName="@horaini",Value=reg.horaini},
+                new SqlParameter(){ParameterName="@horafin",Value=reg.horafin},
+                new SqlParameter(){ParameterName="@cuenta",Value=reg.idcuenta},
+            };
+            ViewBag.mensaje = medicos.CRUDMEDICO("usp_editar_medico", pars, 2);
+            ViewBag.especialidades = new SelectList(especialidades.listarEspecialidades(), "idespecialidad", "nombreesp", reg.idespecialidad);
+            ViewBag.cuentas = new SelectList(usuarios.listadoCombo().Where(u => u.tipo == "Paciente" || u.tipo == "Medico"), "idusuario", "email", reg.idcuenta);
+            ViewBag.medicos = medicos.listadoManteniminetoMedicos();
+            return View(reg);
+        }
+        /*******************************TERMINA EL CRUD DE MEDICOS*********************************/
+        /*******************************COMIENZA LA ATENCIÓN DE CITAS MEDICAS*********************************/
+        public ActionResult ConsultaCitasMedicas(int idcit = 0)
+        {
+            Usuario usuario = Session["usuario"] as Usuario;
+            if (usuario == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            Cita reg = citas.listadoCitas().Where(c => c.idcita == idcit).FirstOrDefault();
+            if (reg == null) reg = new Cita();
+            ViewBag.citasdemedico = citas.listadoConsultaCitaMedico(usuario.idusuario);
+            ViewBag.estados = new SelectList(estados.listadoEstadoCita(), "idestado", "descripcion", reg.idestado);
+            ViewBag.paciente = new SelectList(usuarios.listado().Where(p => p.idtipo == 2), "idusuario", "nombreusu", reg.idusuario);
+            return View(reg);
+        }
+        [HttpPost]public ActionResult ConsultaCitasMedicas(string btnactualizar, Cita reg)
+        {
+            switch (btnactualizar)
+            {
+                case "Pagar": return AtenderCita(reg);
+                default: return RedirectToAction("ConsultaCitasMedicas", new { idcit = "" });
+            }
+        }
+        public ActionResult AtenderCita(Cita reg)
+        {
+            Usuario usuario = Session["usuario"] as Usuario;
+            if (usuario == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            SqlParameter[] pars =
+            {
+                new SqlParameter(){ParameterName="@idcita",Value=reg.idcita},
+                new SqlParameter(){ParameterName="@observaciones",Value=reg.observaciones},
+                new SqlParameter(){ParameterName="@prescripcion",Value=reg.prescripcion},
+                new SqlParameter(){ParameterName="@pago",Value=reg.pagocita},
+                new SqlParameter(){ParameterName="@estado",Value=reg.idestado},
+            };
+            ViewBag.mensaje = citas.METODOSCITA("usp_editar_cita", pars, 2);
+            ViewBag.citasdemedico = citas.listadoConsultaCitaMedico(usuario.idusuario);
+            ViewBag.estados = new SelectList(estados.listadoEstadoCita(), "idestado", "descripcion", reg.idestado);
+            ViewBag.paciente = new SelectList(usuarios.listado().Where(p => p.idtipo == 2), "idusuario", "nombreusu", reg.idusuario);
+            return View(reg);
+        }
+        /*******************************TERMINA LA ATENCIÓN DE CITAS MEDICAS*********************************/
+        /*******************************COMENZAR REGISTRO DE VENTAS*********************************/
 
     }
 }

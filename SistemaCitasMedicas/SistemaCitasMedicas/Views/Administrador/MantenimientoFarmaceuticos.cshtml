@@ -43,7 +43,7 @@
                                     <div class="col-md-6">
                                         <label class="form-label">Nombre</label>
                                         <div class="">
-                                            @Html.EditorFor(model => model.nombrefarm, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.EditorFor(model => model.nombrefarm, new { htmlAttributes = new { @class = "form-control", placeholder="Ingrese nombre del producto" } })
                                             @Html.ValidationMessageFor(model => model.nombrefarm, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
@@ -52,28 +52,21 @@
                                     <div class="col-md-6">
                                         <label class="form-label">Stock</label>
                                         <div class="">
-                                            @Html.EditorFor(model => model.stockfarm, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.EditorFor(model => model.stockfarm, new { htmlAttributes = new { @class = "form-control", placeholder = "Ingrese cantidad del producto",min="0" } })
                                             @Html.ValidationMessageFor(model => model.stockfarm, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">
                                         <label class="form-label">Precio</label>
-                                        <div class="">
-                                            @Html.EditorFor(model => model.preciofarm, new { htmlAttributes = new { @class = "form-control" } })
+                                        <div class="input-group">
+                                            <span class="input-group-text">S/.</span>
+                                            @Html.EditorFor(model => model.preciofarm, new { htmlAttributes = new { @class = "form-control", placeholder = "Ingrese precio del producto" } })
                                             @Html.ValidationMessageFor(model => model.preciofarm, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row g-3 mb-3">
-                                    <div class="col-md-6">
-                                        <label class="form-label">Descripción</label>
-                                        <div class="">
-                                            @Html.EditorFor(model => model.descripcionfarm, new { htmlAttributes = new { @class = "form-control" } })
-                                            @Html.ValidationMessageFor(model => model.descripcionfarm, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-
                                     <div class="col-md-6">
                                         <label class="form-label">Proveedor</label>
                                         <div class="">
@@ -81,8 +74,6 @@
                                             @Html.ValidationMessageFor(model => model.idproveedor, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row g-3 mb-3">
                                     <div class="col-md-6">
                                         <label class="form-label">Estado de farmaceutico</label>
                                         <div class="">
@@ -90,12 +81,21 @@
                                             @Html.ValidationMessageFor(model => model.idestado, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
-
+                                </div>
+                                <div class="row g-3 mb-3">
                                     <div class="col-md-6">
                                         <label class="form-label">Fecha de registro</label>
-                                        <div class="">
+                                        <div class="input-group">
+                                            <span class="input-group-text bi bi-calendar-check-fill"></span>
                                             @Html.EditorFor(model => model.fechaReg, new { htmlAttributes = new { @class = "form-control", type = "datetime", disabled = "" } })
                                             @Html.ValidationMessageFor(model => model.fechaReg, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label class="form-label">Descripción</label>
+                                        <div class="">
+                                            @Html.TextAreaFor(model => model.descripcionfarm,5,5, new { @class = "form-control", placeholder = "Ingrese descripción del producto" })
+                                            @Html.ValidationMessageFor(model => model.descripcionfarm, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
                                 </div>
