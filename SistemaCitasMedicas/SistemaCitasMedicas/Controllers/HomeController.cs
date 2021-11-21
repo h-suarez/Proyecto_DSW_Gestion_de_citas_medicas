@@ -26,6 +26,8 @@ namespace SistemaCitasMedicas.Controllers
 
         public ActionResult Login()
         {
+            // En este caso al desloguearse si se pueden cerrar todas las sesion, como de usuario y carrito
+            Session.Abandon();
             return View();
         }
         [HttpPost]

@@ -1,0 +1,79 @@
+﻿@model IEnumerable<SistemaCitasMedicas.Models.CitaList2>
+@using SistemaCitasMedicas.Models
+
+@{
+    ViewBag.Title = "ReporteCitasGenerales";
+    var usuario = (Usuario)Session["usuario"];
+}
+<body class="sb-nav-fixed">
+    @Html.Partial("_AdminMenuSuperior")
+    <div id="layoutSidenav">
+        @Html.Partial("_AdminMenu")
+        <div id="layoutSidenav_content">
+            <main class="container-md">
+                <div class="d-flex justify-content-between pt-3">
+                    <h4 class="text-secondary text-uppercase">Reporte de citas</h4>
+                    <button class="btn btn-danger bi bi-file-pdf"> Generar pdf</button>
+                </div>
+                <hr />
+
+                <div class="">
+                    <table class="table" id="datatablesSimple">
+                        <thead class="table-dark mt-0 pt-0">
+                            <tr>
+                                <th>
+                                    Id cita
+                                </th>
+                                <th>
+                                    Especialidad
+                                </th>
+                                <th>
+                                    Precio
+                                </th>
+                                <th>
+                                    Pago
+                                </th>
+                                <th>
+                                    Estado
+                                </th>
+                                <th>
+                                    Fecha de cita
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.idcita)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.especialidad)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.preciocita)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.pagocita)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.estado)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.fechacita)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Detalle", "SinMetodo", new { idcitdet = item.idcita }, new { @class = "btn btn-link text-decoration-none p-0" })
+                                </td>
+                            </tr>
+                        }
+
+                    </table>
+                </div>
+
+            </main>
+        </div>
+    </div>
+</body>

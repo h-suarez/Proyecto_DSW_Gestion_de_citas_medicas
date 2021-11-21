@@ -497,6 +497,19 @@ on c.idmedico = m.idmedico
 where m.idcuenta = @idmed
 order by idcita asc
 go
+--exec usp_listar_man_citas 6
+
+create proc usp_listar_reporte_citas_atendidas
+as
+select c.idcita,e.nombreesp,c.preciocita,c.pagocita,es.descripcion,c.fechacita from tb_cita c
+inner join tb_medico m
+on c.idmedico = m.idmedico
+inner join tb_especialidad e
+on m.idespecialidad = e.idespecialidad
+inner join tb_estado es
+on c.idestado = es.idestado
+order by 1 asc
+go
 
 /*create proc usp_listar_citas_x_id
 @idcita int
@@ -709,14 +722,14 @@ go
 create table tb_venta(
 idventa int primary key identity(1,1),
 idpaciente int references tb_usuario(idusuario),
-idvendedor int references tb_usuario(idusuario),
-cantidadtot int not null,
-preciotot decimal(11,2) not null default 0.00,
-fechaReg date default getdate() not null
+--idvendedor int references tb_usuario(idusuario),
+--cantidadtot int not null,
+--preciotot decimal(11,2) not null default 0.00,
+fechaReg date default getdate()
 )
 --truncate table tb_venta
-insert into tb_venta values(3,7,20,30.00,default)
-insert into tb_venta values(4,8,13,15.00,default)
+insert into tb_venta values(3,default)
+insert into tb_venta values(4,default)
 go
 
 create proc usp_listar_venta
@@ -724,21 +737,25 @@ as
 select*from tb_venta order by idventa asc
 go
 
-create proc usp_listar_venta_x_vendedor
+/*create proc usp_listar_venta_x_vendedor
 @vend int
 as
 select * from tb_venta
 where idvendedor = @vend
 order by idventa asc
-go
+go*/
 
 create proc usp_agregar_venta
 @paciente int,
-@vendedor int,
-@cant int,
-@prec decimal(11,2)
+--@cant int,
+--@prec decimal(11,2),
+@n int output -- Variable de salida
 as
-insert into tb_venta values(@paciente,@vendedor,@cant,@prec,default)
+begin
+insert into tb_venta values(@paciente,default)
+select @n = SCOPE_IDENTITY() -- SCOPE_IDENTITY() => devuelve el último ID creado en la misma conexión
+return @n
+end
 go
 
 create table tb_detalleVenta(
@@ -751,12 +768,16 @@ foreign key(idventa) references tb_venta(idventa),
 foreign key(idfarmaceutico) references tb_farmaceutico(idfarmaceutico)
 );
 --truncate table tb_detalleVenta
-insert into tb_detalleVenta values(1,1,2,12.00)
+insert into tb_detalleVenta values(1,1,3,12.00)
+insert into tb_detalleVenta values(1,2,2,20.00)
 go
 
 create proc usp_listar_detalle_venta
 as
-select*from tb_detalleVenta order by idventa asc
+select d.idventa,f.nombrefarm,d.cantidaddet,d.precioUnidaddet from tb_detalleVenta d
+inner join tb_farmaceutico f
+on d.idfarmaceutico = f.idfarmaceutico
+order by d.idventa asc
 go
 
 create proc usp_agregar_detalle_venta
@@ -766,6 +787,14 @@ create proc usp_agregar_detalle_venta
 @preunit decimal(11,2)
 as
 insert into tb_detalleVenta values(@idventa,@farm,@cant,@preunit)
+go
+
+create proc usp_actualiza_unidades
+@idfarm int,
+@cantidad int
+as
+update tb_farmaceutico set stockfarm -= @cantidad
+where idfarmaceutico = @idfarm
 go
 
 /***********************************************SP PARA PANEL DE CONTROL***************************************************/
@@ -803,14 +832,20 @@ go
 
 --INGRESOS VENTAS
 -- este mes
-/*create proc usp_ingresos_este_mes
+create proc usp_ingresos_este_mes
 as
-select isnull(sum(preciotot),0.00) from tb_venta
-where Month(fechaReg) = Month(getdate())
+--select ISNULL(sum(d.precioUnidaddet),0.00) from tb_detalleVenta d
+select * from tb_detalleVenta d
+inner join tb_venta v
+on d.idventa = v.idventa
+where MONTH(v.fechaReg) = MONTH(getdate())
 go
 -- mes pasado
 create proc usp_ingresos_este_mes_pasado
 as
-select isnull(sum(preciotot),0.00) from tb_venta
+select * from tb_detalleVenta d
+--select ISNULL(sum(d.precioUnidaddet),0.00) from tb_detalleVenta d
+inner join tb_venta v
+on d.idventa = v.idventa
 where Month(fechaReg) = month(dateadd(month, -1, GETDATE()))
-go*/
+go

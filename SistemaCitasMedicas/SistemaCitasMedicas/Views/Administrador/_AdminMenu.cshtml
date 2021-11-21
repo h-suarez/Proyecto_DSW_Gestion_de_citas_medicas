@@ -3,6 +3,7 @@
 @{
     var usuario = (Usuario)Session["usuario"];
 }
+
 @if (usuario.idestado == 1) {
     <div id="layoutSidenav_nav">
         <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
@@ -61,7 +62,7 @@
                             <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
                                 <!-- Opciones del panel de navegación -->
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    @Html.ActionLink("Compras", "", null, new { @class = "nav-link" })
+                                    @Html.ActionLink("Compras", "CompraFarmaceutico", null, new { @class = "nav-link" })
                                 </nav>
                                 <!-- Opciones del panel de navegación -->
                             </nav>
@@ -76,8 +77,8 @@
                             <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
                                 <!-- Opciones del panel de navegación -->
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    @Html.ActionLink("Ventas", "", null, new { @class = "nav-link" })
-                                    @Html.ActionLink("Citas generales", "", null, new { @class = "nav-link" })
+                                    @Html.ActionLink("Ventas", "ReporteVentas", null, new { @class = "nav-link" })
+                                    @Html.ActionLink("Citas generales", "ReporteCitasGenerales", null, new { @class = "nav-link" })
                                 </nav>
                                 <!-- Opciones del panel de navegación -->
                             </nav>
@@ -109,7 +110,7 @@
                             <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
                                 <!-- Opciones del panel de navegación -->
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    @Html.ActionLink("Compras", "", null, new { @class = "nav-link" })
+                                    @Html.ActionLink("Compras", "CompraFarmaceutico", null, new { @class = "nav-link" })
                                 </nav>
                                 <!-- Opciones del panel de navegación -->
                             </nav>

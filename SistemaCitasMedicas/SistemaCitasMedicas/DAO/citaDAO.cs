@@ -73,6 +73,32 @@ namespace SistemaCitasMedicas.DAO
             }
             return temporal;
         }
+        public IEnumerable<CitaList2> listadoReporteCitas()
+        {
+            List<CitaList2> temporal = new List<CitaList2>();
+            cn = new conexionDAO();
+            using (cn.getcn)
+            {
+                SqlCommand cmd = new SqlCommand("exec usp_listar_reporte_citas_atendidas", cn.getcn);
+                cn.getcn.Open();
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    temporal.Add(new CitaList2()
+                    {
+                        idcita = dr.GetInt32(0),
+                        especialidad = dr.GetString(1),
+                        preciocita = dr.GetDecimal(2),
+                        pagocita = dr.GetDecimal(3),
+                        estado = dr.GetString(4),
+                        fechacita = dr.GetDateTime(5)
+                    });
+                }
+                dr.Close();
+                cn.getcn.Close();
+            }
+            return temporal;
+        }
         public string METODOSCITA(string sp, SqlParameter[] pars = null, int op = 0)
         {
             //cn = new conexionDAO();

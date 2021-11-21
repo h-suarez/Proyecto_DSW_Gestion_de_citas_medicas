@@ -19,7 +19,7 @@
 {
     @Html.AntiForgeryToken()
     
-<div style="background-color: #2A3B71;" class="container rounded-3 pt-2 row g-3 mx-md-auto">
+<div style="background-color: #2A3B71;" class="container rounded-3 mt-3 row g-3 mx-md-auto">
     <div class="d-flex col-md-12">
         <h2 class="text-white col-md-7">Por favor ingrese su información personal</h2>
         @if (Model.dniusu == 0 || Model.nombreusu.IsEmpty() || Model.celularusu.IsEmpty() || Model.email.IsEmpty() || Model.clave.IsEmpty())
@@ -117,10 +117,6 @@
     ------------------------>
 </div>
 }
-
-<div>
-    
-</div>
 
 <script>
     function mostrarContrasena() {

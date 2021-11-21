@@ -70,12 +70,26 @@
 
                                 <div class="card row mb-3 mx-0">
                                     <h4 class="text-center font-monospace fw-bold card-header">Información de cuenta</h4>
-                                    <div class="col-md-12 my-4">
-                                        <label class="form-label">Cuenta del medico</label>
-                                        <div class="input-group">
-                                            @Html.DropDownList("idcuenta", ViewBag.cuentas as SelectList, new { @class = "form-select", multiple="", size = "10" })
-                                            <!--button class="btn btn-outline-success">Consultar</button-->
-                                            @Html.ValidationMessageFor(model => model.idcuenta, "", new { @class = "text-danger" })  
+                                    <div class="row mb-3">
+                                        <div class="col-md-8 my-4">
+                                            <h5 class="form-label fw-bold font-monospace">Cuenta del medico</h5>
+                                            <div class="input-group">
+                                                @Html.DropDownList("idcuenta", ViewBag.cuentas as SelectList,"Seleccione una cuenta", new { @class = "form-select"})
+                                                <!--button class="btn btn-outline-success">Consultar</button-->
+                                                @Html.ValidationMessageFor(model => model.idcuenta, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 my-4">
+                                            <h5 class="form-label fw-bold font-monospace">Edite el tipo de la cuenta</h5>
+                                            <div class="">
+                                                @Html.ActionLink("Editar cuenta", "MantenimientoUsuarios", new { idusu = Model.idcuenta }, new { @class = "btn btn-outline-primary text-uppercase" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mb-3">
+                                        <h5 class="form-label fw-bold font-monospace">El medico tiene cuenta?</h5>
+                                        <div>
+                                            @Html.ActionLink("Crear cuenta", "MantenimientoUsuarios", null, new { @class = "btn btn-outline-success text-uppercase my-2" })
                                         </div>
                                     </div>
                                 </div>

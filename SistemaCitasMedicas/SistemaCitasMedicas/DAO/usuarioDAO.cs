@@ -71,7 +71,7 @@ namespace SistemaCitasMedicas.DAO
                         idusuario = (int)dr[0],
                         nombreusu = (string)dr[1],
                         sexo = (string)dr[2],
-                        email = "Nombre: " + (string)dr[1] + ", Sexo: " + dr[2] + ", Correo:" + dr[3] +", Tipo cuenta: " + dr[4] + " Estado cuenta: " + dr[5],
+                        email = dr[0]+" - Correo: " + dr[3] + " Tipo: " + dr[4],
                         tipo = (string)dr[4],
                         estado = (string)dr[5],
                     });

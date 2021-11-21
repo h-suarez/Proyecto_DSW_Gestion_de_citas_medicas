@@ -1,0 +1,66 @@
+﻿@model IEnumerable<SistemaCitasMedicas.Models.DetalleVentaList1>
+@using SistemaCitasMedicas.Models
+
+@{
+    ViewBag.Title = "ReporteVentas";
+    var usuario = (Usuario)Session["usuario"];
+}
+
+<body class="sb-nav-fixed">
+    @Html.Partial("_AdminMenuSuperior")
+    <div id="layoutSidenav">
+        @Html.Partial("_AdminMenu")
+        <div id="layoutSidenav_content">
+            <main class="container-md">
+                <div class="d-flex justify-content-between pt-3">
+                    <h4 class="text-secondary text-uppercase">Reporte de ventas</h4>
+                    <button class="btn btn-danger bi bi-file-pdf"> Generar pdf</button>
+                </div>
+                <hr />
+                <div class="">
+                    <table class="table" id="datatablesSimple">
+                        <thead class="table-dark mt-0 pt-0">
+                            <tr>
+                                <th>
+                                    Id venta
+                                </th>
+                                <th>
+                                    Producto
+                                </th>
+                                <th>
+                                    Cantidad
+                                </th>
+                                <th>
+                                    Precio unitario
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.idventa)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.farmaceutico)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.cantidaddet)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.precioUnidaddet)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Detalle", "SinMetodo", new { idvendet=item.idventa }, new { @class = "btn btn-link text-decoration-none p-0" })
+                                </td>
+                            </tr>
+                        }
+                    </table>
+
+                </div>
+            </main>
+            @Html.Partial("_AdminFooter")
+        </div>
+    </div>
+</body>

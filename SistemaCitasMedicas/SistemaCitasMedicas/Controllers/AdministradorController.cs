@@ -29,18 +29,18 @@ namespace SistemaCitasMedicas.Controllers
         {
             Usuario usuario = Session["usuario"] as Usuario;
             //Panel de control
-            ViewBag.cantidadusu = usuarios.listado().Count().ToString();
+            ViewBag.cantidadusu = usuarios.listado().Where(u=>u.idtipo==2).Count().ToString();
             ViewBag.cantidamed = medicos.listadoMedicos().Count().ToString();
             ViewBag.cantidcita= citas.citasAtendidas(8).Count().ToString();
             //Panel de control - Ventas
             ViewBag.mesactualventas = ventas.listarVentasMesActual().Count().ToString();
             ViewBag.mespasadoventas = ventas.listarVentasMesPasado().Count().ToString();
             //Panel de control - Usuarios
-            ViewBag.mesactualusuarios = usuarios.listarUsuariosMesActual().Count().ToString();
+            ViewBag.mesactualusuarios = usuarios.listarUsuariosMesActual().Where(u=>u.idtipo==2).Count().ToString();
             ViewBag.mespasadousuarios = usuarios.listarUsuariosMesPasado().Count().ToString();
             //Panel de control - Ingresos
-            ViewBag.mesactualIngresos = ventas.listarVentasMesActual().Sum(v => v.preciotot).ToString();
-            ViewBag.mespasadoIngresos = ventas.listarVentasMesPasado().Sum(v => v.preciotot).ToString();
+            ViewBag.mesactualIngresos = ventas.listarIngresosMesActual().Sum(v => v.precioUnidaddet).ToString();
+            ViewBag.mespasadoIngresos = ventas.listarIngresosMesPasado().Sum(v => v.precioUnidaddet).ToString();
             if (usuario == null)
             {
                 return RedirectToAction("Login", "Home");
@@ -447,7 +447,145 @@ namespace SistemaCitasMedicas.Controllers
             return View(reg);
         }
         /*******************************TERMINA LA ATENCIÓN DE CITAS MEDICAS*********************************/
-        /*******************************COMENZAR REGISTRO DE VENTAS*********************************/
-
+        /*******************************COMIENZA EL PROCESO DE COMPRA DE FARMACEUTICO*********************************/
+        public ActionResult CompraFarmaceutico()
+        {
+            Usuario usuario = Session["usuario"] as Usuario;
+            if (usuario == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            if (Session["carrito"] == null)
+            {
+                Session["carrito"] = new List<Item>();
+            }
+            ViewBag.items = Session["carrito"];
+            return View(farmaceuticos.listarFarmaceuticos());
+        }
+        public ActionResult Seleccionar(int idprod = 0) {
+            Usuario usuario = Session["usuario"] as Usuario;
+            if (usuario == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            Farmaceutico reg = farmaceuticos.listarFarmaceuticos().Where(f => f.idfarmaceutico == idprod).FirstOrDefault();
+            if (reg == null)
+            {
+                return RedirectToAction("CompraFarmaceutico");
+            }
+            ViewBag.d = (Session["carrito"] as List<Item>).Exists(p => p.codigo == idprod); // ? true : false; Dehabilita el boton agregar
+            //ViewBag.mensaje = "El producto ya esta registrado en el carrito";
+            return View(reg);
+        }
+        [HttpPost]public ActionResult Seleccionar(int codigo,int cantidad)
+        {
+            Farmaceutico reg = farmaceuticos.listarFarmaceuticos().Where(f => f.idfarmaceutico == codigo).FirstOrDefault();
+            Item it = new Item()
+            {
+                codigo = codigo,
+                descripcion = reg.nombrefarm,
+                precio = reg.preciofarm,
+                cantidad = cantidad
+            };
+            (Session["carrito"] as List<Item>).Add(it);
+            ViewBag.d = true;
+            ViewBag.mensaje = "Producto Agregado";
+            return View(reg);
+        }
+        public ActionResult Carrito()
+        {
+            Usuario usuario = Session["usuario"] as Usuario;
+            if (usuario == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            if (Session["carrito"] == null)
+            {
+                //Session["carrito"] = new List<Item>();
+                return RedirectToAction("CompraFarmaceutico");
+            }
+            else
+            {
+                return View(Session["carrito"] as List<Item>);
+            }
+        }
+        [HttpPost]public ActionResult ActualizarCantidad(int id, int q)
+        {
+            Item reg = (Session["carrito"] as List<Item>).Where(p => p.codigo == id).FirstOrDefault();
+            reg.cantidad = q;
+            return RedirectToAction("CompraFarmaceutico");
+        }
+        public ActionResult EliminarItem(int id)
+        {
+            Item reg = (Session["carrito"] as List<Item>).Find(p => p.codigo == id);
+            (Session["carrito"] as List<Item>).Remove(reg);
+            return RedirectToAction("CompraFarmaceutico");
+        }
+        public ActionResult Comprar()
+        {
+            Usuario usuario = Session["usuario"] as Usuario;
+            Venta reg = new Venta();
+            if (usuario == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            if (Session["carrito"] == null)
+            {
+                ViewBag.usuarios = new SelectList(usuarios.listado().Where(u => u.idtipo==2), "idusuario", "nombreusu",reg.idpaciente);
+                return RedirectToAction("Comprar");
+            }
+            else
+            {
+                ViewBag.usuarios = new SelectList(usuarios.listado().Where(u => u.idtipo==2), "idusuario", "nombreusu", reg.idpaciente);
+                return View(new Venta());
+            }
+        }
+        [HttpPost]public ActionResult Comprar(Venta reg)
+        {
+            /*Usuario usuario = Session["usuario"] as Usuario;
+            if (usuario == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }*/
+            if ((Session["carrito"] as List<Item>).Count == 0)
+            {
+                ViewBag.mensaje = "Debe agregar productos";
+                ViewBag.usuarios = new SelectList(usuarios.listado().Where(u => u.idtipo == 2), "idusuario", "nombreusu",reg.idpaciente);
+                return View(reg);
+            }
+            else
+            {
+                ViewBag.usuarios = new SelectList(usuarios.listado().Where(u => u.idtipo == 2), "idusuario", "nombreusu",reg.idpaciente);
+                ViewBag.mensaje = ventas.Transaccion(reg, Session["carrito"] as List<Item>); //ok
+                // Es mejor no usar este metodo debido a que cierra todas las sesione
+                //Session.Abandon(); //Cerrar la sesión
+                // En su lugar, mejor limpio la lista de Item que contiene la Sesion de carrito
+                Session["carrito"] = new List<Item>();
+                return View(reg);
+            }
+        }
+        /*******************************TERMINA EL PROCESO DE COMPRA DE FARMACEUTICO*********************************/
+        /*******************************COMIENZA REPORTE DE VENTAS*********************************/
+        public ActionResult ReporteVentas()
+        {
+            Usuario usuario = Session["usuario"] as Usuario;
+            if (usuario == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            return View(ventas.listarReporteVentas());
+        }
+        /*******************************TERMINA REPORTE DE VENTAS*********************************/
+        /*******************************COMIENZA REPORTE DE CITAS GENERALES*********************************/
+        public ActionResult ReporteCitasGenerales()
+        {
+            Usuario usuario = Session["usuario"] as Usuario;
+            if (usuario == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            return View(citas.listadoReporteCitas().Where(c => c.estado == "Atendida"));
+        }
+        /*******************************TERMINA REPORTE DE CITAS GENERALES*********************************/
     }
 }
