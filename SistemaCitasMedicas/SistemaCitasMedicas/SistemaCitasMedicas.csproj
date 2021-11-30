@@ -276,6 +276,8 @@
     <Content Include="Views\Administrador\Comprar.cshtml" />
     <Content Include="Views\Administrador\ReporteVentas.cshtml" />
     <Content Include="Views\Administrador\ReporteCitasGenerales.cshtml" />
+    <Content Include="Views\Cliente\Citas.cshtml" />
+    <Content Include="Views\Cliente\Solicitar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

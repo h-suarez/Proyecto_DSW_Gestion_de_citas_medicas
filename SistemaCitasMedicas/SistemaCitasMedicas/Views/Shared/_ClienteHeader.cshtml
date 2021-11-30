@@ -19,7 +19,7 @@
                         Citas
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Pide tu Cita</a></li><!--REEMPLAZAR CON Html.ActionLink-->
+                        <li>@Html.ActionLink("Pide tu cita", "Citas", null, new { @class = "dropdown-item" })</li><!--REEMPLAZAR CON Html.ActionLink-->
                     </ul>
                 </li>
                 <li class="nav-item">

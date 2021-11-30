@@ -1,0 +1,54 @@
+﻿@model SistemaCitasMedicas.Models.Medico
+
+@{
+    ViewBag.Title = "Solicitar";
+}
+
+<h2>Solicitar</h2>
+
+<div>
+    <h4>Medico</h4>
+    <hr />
+    <dl class="dl-horizontal">
+
+        <dt>
+            @Html.DisplayNameFor(model => model.idespecialidad)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.idespecialidad)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.horaini)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.horaini)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.horafin)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.horafin)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.idcuenta)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.idcuenta)
+        </dd>
+        @using (Html.BeginForm())
+        {
+            @Html.Hidden("idmedico", Model.idmedico)
+        }
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ })
+</p>

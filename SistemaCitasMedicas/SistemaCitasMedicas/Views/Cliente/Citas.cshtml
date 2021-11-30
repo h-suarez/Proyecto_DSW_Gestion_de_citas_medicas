@@ -1,0 +1,55 @@
+﻿@model IEnumerable<SistemaCitasMedicas.Models.MedicoList1>
+
+@{
+    ViewBag.Title = "Citas";
+}
+@Html.Partial("_ClienteHeader")
+
+<h2>Escoge tu medico</h2>
+
+@using (Html.BeginForm())
+{
+    <em>Id de empleado</em>
+    @Html.DropDownList("idmedico", ViewBag.medicos as SelectList)
+    <button>Consulta</button>
+}
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.idmedico)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.especialidad)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.horaini)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.horafin)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.idmedico)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.especialidad)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.horaini)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.horafin)
+            </td>
+            <td>
+                @Html.ActionLink("Seleccione", "Solicitar", new { idmedico=item.idmedico })
+            </td>
+        </tr>
+    }
+
+</table>
