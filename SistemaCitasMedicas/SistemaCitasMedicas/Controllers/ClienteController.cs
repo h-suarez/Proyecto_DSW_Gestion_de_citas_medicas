@@ -12,7 +12,9 @@ namespace SistemaCitasMedicas.Controllers
     public class ClienteController : Controller
     {
         medicoDAO medicos = new medicoDAO();
-        // GET: Cliente
+        usuarioDAO usuarios = new usuarioDAO();
+        especialidadDAO especialidades = new especialidadDAO();
+        citaDAO citas = new citaDAO();
         public ActionResult Home()
         {
             Usuario usuario = Session["usuario"] as Usuario;
@@ -44,19 +46,35 @@ namespace SistemaCitasMedicas.Controllers
             }
             Medico reg = medicos.listadoMedicos().Where(m => m.idmedico == idmedico).FirstOrDefault();
             if (reg == null) reg = new Medico();
+            dynamic prub = usuarios.listado().FirstOrDefault(m => m.idusuario == reg.idcuenta);
+            
+            ViewBag.nomMed = prub.nombreusu;
+            ViewBag.espMed = especialidades.listarEspecialidades().FirstOrDefault(e => e.idespecialidad == reg.idespecialidad).nombreesp;
+            ViewBag.iniMed = reg.horaini;
+            ViewBag.finMed = reg.horafin;
+
             return View(reg);
         }
         
 
-        [HttpPost]public ActionResult Solicitar(int idmedico = 0,DateTime fecha= new DateTime(),TimeSpan hora = new TimeSpan())
+        [HttpPost]public ActionResult Solicitar(int idmedico = 0, DateTime fecha= new DateTime(), TimeSpan hora = new TimeSpan())
         {
             Usuario usuario = Session["usuario"] as Usuario;
             if (usuario == null)
             {
                 return RedirectToAction("Login", "Home");
             }
-            
-            return View();
+            SqlParameter[] pars =
+            {
+                new SqlParameter(){ParameterName="@medico",Value=idmedico},
+                new SqlParameter(){ParameterName="@paciente",Value=usuario.idusuario},
+                new SqlParameter(){ParameterName="@fecha",Value=fecha},
+                new SqlParameter(){ParameterName="@hora",Value=hora},
+            };
+            Medico reg = medicos.listadoMedicos().Where(m => m.idmedico == idmedico).FirstOrDefault();
+            ViewBag.mensaje = citas.METODOSCITA("usp_agregar_cita", pars, 1);
+            ViewBag.d = true;
+            return View(reg);           
         }
     }
 }

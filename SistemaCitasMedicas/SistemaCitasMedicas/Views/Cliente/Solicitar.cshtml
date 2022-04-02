@@ -1,54 +1,93 @@
 ﻿@model SistemaCitasMedicas.Models.Medico
+@using SistemaCitasMedicas.Models
 
 @{
     ViewBag.Title = "Solicitar";
 }
 
-<h2>Solicitar</h2>
+@{
+    ViewBag.Title = "Seleccionar";
+    var usuario = (Usuario)Session["usuario"];
+}
 
-<div>
-    <h4>Medico</h4>
-    <hr />
-    <dl class="dl-horizontal">
+@Html.Partial("_ClienteHeader")
 
-        <dt>
-            @Html.DisplayNameFor(model => model.idespecialidad)
-        </dt>
+<h2 class="mx-5 my-4" style="color: saddlebrown">Paso 2: Complete los siguientes campos</h2>
 
-        <dd>
-            @Html.DisplayFor(model => model.idespecialidad)
-        </dd>
+<h4 class="text-success text-center">@ViewBag.mensaje</h4>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.horaini)
-        </dt>
+<div class="card mb-5 mx-auto bg-black bg-opacity-10" style="max-width: 1200px;">
+    <div class="row g-0">
+        <div class="col-md-4 d-flex justify-content-center">
+            <img src="@Url.Content(Model.fotomed)" class="img-fluid rounded-circle my-3" width="300" alt="Img Medico" />
+        </div>
+        <div class="col-md-8 d-flex align-items-center">
+            <div class="card-body">
+                <h3 class="card-title">Médico: @ViewBag.nomMed</h3>
+                <h3 class="card-title my-4">Especialidad: @ViewBag.espMed</h3>
+                <h3 class="card-title">Horario disponible: De @ViewBag.iniMed a @ViewBag.finMed</h3>
+            </div>
+        </div>
+    </div>
+</div>
 
-        <dd>
-            @Html.DisplayFor(model => model.horaini)
-        </dd>
+<div class="d-md-flex mb-3">
+    <div class="card col mx-3 p-4">
 
-        <dt>
-            @Html.DisplayNameFor(model => model.horafin)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.horafin)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.idcuenta)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.idcuenta)
-        </dd>
         @using (Html.BeginForm())
         {
             @Html.Hidden("idmedico", Model.idmedico)
-        }
+            <label class="form-label">
+                Nombre Completo:
+            </label>
+            <input type="text" class="form-control mb-2" autofocus />
 
-    </dl>
+            <label class="form-label">
+                DNI:
+            </label>
+            <input type="text" class="form-control mb-2" />
+
+            <label class="form-label">
+                Fecha de reserva:
+            </label>
+            @Html.TextBox("fecha", DateTime.Now, new { @class = "form-control mb-2", type = "date" })
+            <!--input type="date" class="form-control mb-2" /-->
+
+            <label class="form-label">
+                Hora:
+            </label>
+            @Html.TextBox("hora", TimeSpan.Zero, new { @class = "form-control mb-2", type = "time" })
+            <!--input type="time" class="form-control mb-2" /-->
+
+            <button type="submit" class="btn btn-success mt-4" disabled="@ViewBag.d">Reserva Cita</button>
+        }
+    </div>
+
+    <div class="card col mx-3">
+        <div class="card-header">
+            <h3 class="text-center text-muted">Ejemplo</h3>
+            <hr />
+            <p class="text-muted">Nombre completo: Juan alverto de la torre servantes</p>
+            <p class="text-muted">DNI: 84484621</p>
+            <p class="text-muted">Fecha: 04/12/2021</p>
+            <p class="text-muted">Hora: 05:00</p>
+            <hr />
+            <p class="text-muted">
+                Nota 1: El costo de reserva de las citas son de 50 soles asi que
+                cuando vaya a su consultorio medico, porfavor no olvidar llevar
+                la cantidad a pagar y su documento de identidad.
+            </p>
+            <p class="text-muted">
+                Nota 2: Las horas son correspondiente a la disponibilidad del
+                doctor.
+            </p>
+            <p class="text-muted">
+                Nota 3: Solo atendemos de lunes a sabado, si en caso eligio un
+                domingo su cita no sera atentida.
+            </p>
+        </div>
+    </div>
+
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ })
-</p>
+
+@Html.Partial("_ClienteFooter")

@@ -44,8 +44,7 @@
     <div class="row col-md-12 d-flex justify-content-md-between">
         <div class="col-md-6 d-flex align-items-md-center justify-content-md-start mt-md-4">
             <label class="text-white h4">DNI:</label>
-            @Html.EditorFor(model => model.dniusu, new { htmlAttributes = new { @class = "form-control mx-4", max = "99999999", maxlength = "8", placeholder = "Ingrese su dni" } })
-            @Html.ValidationMessageFor(model => model.dniusu, "", new { @class = "text-center text-danger bg-dark" })
+            @Html.EditorFor(model => model.dniusu, new { htmlAttributes = new { @class = "form-control mx-4", type="text", maxlength = "8", placeholder = "Ingrese su dni" } })
         </div>
         <div class="col-md-6 d-flex align-items-md-center justify-content-md-end mt-4">
             <label class="text-white h4">Nombre:</label>
@@ -75,7 +74,7 @@
         </div>
         <div class="col-md-6 d-flex align-items-md-center justify-content-md-end mt-4">
             <label class="text-white h4">Email:</label>
-            @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control mx-4", maxlength = "60", placeholder = "Ingrese su correo" } })
+            @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control mx-4", maxlength = "60", placeholder = "Ingrese su correo", autocomplete="off" } })
             @Html.ValidationMessageFor(model => model.email, "", new { @class = "text-danger" })
         </div>
     </div>
