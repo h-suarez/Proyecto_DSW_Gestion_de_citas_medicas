@@ -1,0 +1,40 @@
+﻿@model IEnumerable<SistemaCitasMedicas.Models.Especialidad>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.idespecialidad)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fotoesp)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.nombreesp)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.descripcionesp)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.idespecialidad)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fotoesp)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.nombreesp)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.descripcionesp)
+        </td>
+        <td>
+            @Html.ActionLink("Seleccionar", "MantenimientoEspecialidades", new { id=item.idespecialidad })
+        </td>
+    </tr>
+}
+
+</table>

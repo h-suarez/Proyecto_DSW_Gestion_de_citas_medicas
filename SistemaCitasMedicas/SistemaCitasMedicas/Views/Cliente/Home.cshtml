@@ -1,0 +1,123 @@
+﻿@using SistemaCitasMedicas.Models
+@{
+    ViewBag.Title = "Menu Principal";
+    var usuario = (Usuario)Session["usuario"];
+}
+
+<style>
+    .card {
+        background-color: #F5F5F5;
+        border-radius: 30px;
+        border-style: none;
+        margin: 30px;
+        box-shadow: rgba(0, 0, 0, 0.32) 0px 1px 4px;
+        color: #6D6D6D;
+    }
+
+    .card-bottom {
+        height: 150px;
+    }
+</style>
+
+@Html.Partial("_ClienteHeader") <!-- Renderiza HEADER -->
+
+<div>
+    <img src="~/IMAGENES/carousel_1.png" alt="CAROUSEL_1" class="img-fluid" />
+</div>
+
+<br />
+
+<div>
+    <h4 class="text-center">Sobre Nosotros</h4>
+</div>
+
+<br />
+
+<div class="container-fluid">
+    <div class="row align-items-start">
+        <div class="col-lg-6 col-sm-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Mision</h4>
+                </div>
+                <img src="~/IMAGENES/mision.png" class="card-img-top" alt="...">
+                <div class="card-body card-bottom">
+                    <h5 class="card-text">
+                        Brindamos tranquilidad a los pacientes
+                        y sus familias a través de servicios integrados de salud accesibles y de alta
+                        calidad, utilizando las mejores prácticas
+                        médicas con personal ético y altamente
+                        calificado.
+                    </h5>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Vision</h4>
+                </div>
+                <img src="~/IMAGENES/vision.png" class="card-img-top" alt="...">
+                <div class="card-body card-bottom">
+                    <h5 class="card-text">
+                        Ser el mejor sistema integrado de salud a
+                        nivel nacional, brindando acceso a los más
+                        altos estándares de calidad y seguridad
+                        médica.
+                    </h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br />
+
+<div class="container-fluid">
+    <h4 class="text-center">Contactanos</h4>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title">Formulario de Contacto</h3>
+                    <hr />
+                    <div class="row">
+                        <div class="col-xl-6">
+                            <div class="form-group h-100">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend w-25">
+                                        <span class="input-group-text">Nombre</span>
+                                    </div>
+                                    <input type="text" class="form-control text-md-end" value="@Html.DisplayFor(u => usuario.nombreusu)" readonly>
+                                </div>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend w-25">
+                                        <span class="input-group-text">DNI</span>
+                                    </div>
+                                    <input type="text" class="form-control text-md-end" value="@Html.DisplayFor(u => usuario.dniusu)" readonly>
+                                </div>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend w-25">
+                                        <span class="input-group-text">Email</span>
+                                    </div>
+                                    <input type="text" class="form-control text-md-end" value="@Html.DisplayFor(u => usuario.email)" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="form-group h-100">
+                                <textarea class="form-control w-100" id="consulta" style="height: 146px; resize: none;"></textarea>
+                            </div>
+                        </div>
+                    </div>                    
+                    <br />
+                    <div class="text-center">
+                        <input type="submit" class="btn btn-success " value="ENVIAR" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.Partial("_ClienteFooter")

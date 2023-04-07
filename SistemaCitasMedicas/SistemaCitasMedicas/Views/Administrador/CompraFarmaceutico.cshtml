@@ -1,0 +1,91 @@
+﻿@model IEnumerable<SistemaCitasMedicas.Models.Farmaceutico>
+@using SistemaCitasMedicas.Models
+@{
+    ViewBag.Title = "CompraFarmaceutico";
+    var usuario = (Usuario)Session["usuario"];
+}
+
+<body class="sb-nav-fixed">
+    @Html.Partial("_AdminMenuSuperior")
+    <div id="layoutSidenav">
+        @Html.Partial("_AdminMenu")
+        <div id="layoutSidenav_content">
+            <main class="container-md">
+                
+                <div class="form-horizontal">
+                    <h4 class="pt-3 text-secondary text-uppercase">Compra de Farmaceutico</h4>
+                    <hr />
+                    <div class="card">
+                        <h4 class="text-center font-monospace fw-bold  card-header">Listado de Items</h4>
+                        <div class="m-3">
+                            <div class="row g-3 mb-3">
+                                @Html.Partial("_vCarrito",ViewBag.items as List<Item>)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="">
+                    <div class="card-body mt-3">
+                        <table class="table" id="datatablesSimple">
+                            <thead class="table-dark mt-0 pt-0">
+                                <tr>
+                                    <th class="text-center">
+                                        Id
+                                    </th>
+                                    <th class="text-center">
+                                        Imagen
+                                    </th>
+                                    <th class="text-center">
+                                        Nombre
+                                    </th>
+                                    <th class="text-center">
+                                        Cantidad
+                                    </th>
+                                    <th class="text-center">
+                                        Precio
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+
+
+                            @foreach (var item in Model)
+                            {
+                                <tr class="text-center">
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.idfarmaceutico)
+                                    </td>
+                                    <td class="d-flex justify-content-center">
+                                        <img src="@Url.Content(item.fotofarm)" style="width:100px;" alt="Img Farmaceutico" />
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.nombrefarm)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.stockfarm)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.preciofarm)
+                                    </td>
+                                    @if (item.stockfarm <= 0) { 
+                                        <td></td>
+                                    }else{
+                                        <td>
+                                            @Html.ActionLink("Seleccione", "Seleccionar", new { idprod = item.idfarmaceutico }, new { @class = "btn btn-link text-decoration-none p-0" })
+                                        </td>
+                                    }
+                                </tr>
+                            }
+                        </table>
+                    </div>
+                </div>
+
+            </main>
+            @Html.Partial("_AdminFooter")
+        </div>
+    </div>
+</body>
+
+
+

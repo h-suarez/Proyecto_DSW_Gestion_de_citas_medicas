@@ -1,3 +1,5 @@
+use SISTEMACONSULTASMEDICAS
+
 use master
 
 drop database if exists SISTEMACONSULTASMEDICAS
@@ -210,14 +212,14 @@ foreign key(idestado) references tb_estado(idestado)
 insert into tb_usuario values(12345678,'admin1',1,1,'123-123-123','ad1@admin.com','123',default,1,default)
 insert into tb_usuario values(68426546,'admin2',1,1,'123-123-123','ad2@admin.com','123',default,1,default)
 -- clientes
-insert into tb_usuario values(64864887,'juan',1,1,'123-123-123','cliente1@mail.com','123',default,default,default)
-insert into tb_usuario values(16843546,'Maria',2,8,'123-123-123','cliente2@mail.com','123',default,default,default)
+insert into tb_usuario values(64864887,'paciente 1',1,1,'123-123-123','cliente1@mail.com','123',default,default,default)
+insert into tb_usuario values(16843546,'paciente 2',2,8,'123-123-123','cliente2@mail.com','123',default,default,default)
 -- medicos
-insert into tb_usuario values(51651652,'miguel',1,10,'123-123-123','doctor1@mail.com','123',default,3,default)
-insert into tb_usuario values(13446888,'obama',1,4,'123-123-123','doctor2@mail.com','123',default,3,default)
+insert into tb_usuario values(51651652,'doctor 1',1,10,'123-123-123','doctor1@mail.com','123',default,3,default)
+insert into tb_usuario values(13446888,'doctor 2',1,4,'123-123-123','doctor2@mail.com','123',default,3,default)
 -- vendedor
-insert into tb_usuario values(75341351,'carla',2,7,'123-123-123','vendedor1@mail.com','123',default,4,default)
-insert into tb_usuario values(65451888,'lucas',1,5,'123-123-123','vendedor2@mail.com','123',default,4,default)
+insert into tb_usuario values(75341351,'vendedor 1',2,7,'123-123-123','vendedor1@mail.com','123',default,4,default)
+insert into tb_usuario values(65451888,'vendedor 1',1,5,'123-123-123','vendedor2@mail.com','123',default,4,default)
 go
 --truncate table tb_usuario
 
@@ -227,11 +229,26 @@ create proc usp_listar_usuarios
 as
 select*from tb_usuario order by idusuario asc
 go
+
+create proc usp_listar_man_usuarios
+as
+select u.idusuario,u.nombreusu,s.descripcion,u.email,t.descripcion,e.descripcion
+from tb_usuario u
+inner join tb_sexo s
+on u.idsexo = s.idsexo
+inner join tb_tipoCuenta t
+on u.idtipo = t.idtipo
+inner join tb_estado e
+on u.idestado = e.idestado
+where u.idtipo != 1
+order by idusuario asc
+go
+
 -- SP PARA ADMIN
-create proc usp_listar_usuarios_combo
+/*create proc usp_listar_usuarios_combo
 as
 select idusuario,nombreusu from tb_usuario order by nombreusu asc
-go
+go*/
 
 create proc usp_validar_usuario
 @email varchar(60),
@@ -240,38 +257,38 @@ as
 select * from tb_usuario where email = @email and clave = @clave
 go
 -- SP PARA ADMIN
-create proc usp_listar_usuarios_x_sexo
+/*create proc usp_listar_usuarios_x_sexo
 @sexo int
 as
 select*from tb_usuario
 where idsexo = @sexo
 order by idusuario asc
-go
+go*/
 
 -- SP PARA ADMIN
-create proc usp_listar_usuarios_x_distrito
+/*create proc usp_listar_usuarios_x_distrito
 @distrito int
 as
 select*from tb_usuario
 where iddistrito = @distrito
 order by idusuario asc
-go
+go*/
 -- SP PARA ADMIN
-create proc usp_listar_usuarios_x_tipo
+/*create proc usp_listar_usuarios_x_tipo
 @tipo int
 as
 select*from tb_usuario
 where idtipo = @tipo
 order by idusuario asc
-go
+go*/
 -- SP PARA ADMIN
-create proc usp_listar_usuarios_x_estado
+/*create proc usp_listar_usuarios_x_estado
 @est int
 as
 select*from tb_usuario
 where idestado = @est
 order by idusuario asc
-go
+go*/
 
 /******************************CRUDs********************************/
 -- CREATEs
@@ -367,10 +384,21 @@ go
 
 create proc usp_listar_medicos
 as
+select*from tb_medico
+go
+
+create proc usp_listar_man_medicos
+as
+select m.idmedico,m.fotomed,e.nombreesp,m.horaini,m.horafin from tb_medico m
+inner join tb_especialidad e
+on m.idespecialidad = e.idespecialidad
+go
+/*create proc usp_listar_cuentas_tipo_medico
+as
 select*from tb_usuario
 where idtipo = 3
 order by idusuario asc
-go
+go*/
 
 create proc usp_listar_medicos_x_especiliadad
 @especialidad int
@@ -384,13 +412,13 @@ where m.idespecialidad = @especialidad
 order by idmedico asc
 go
 
-create proc usp_listar_medicos_combo
+/*create proc usp_listar_medicos_combo
 as
 select m.idmedico,u.nombreusu from tb_medico m
 inner join tb_usuario u
 on m.idcuenta = u.idusuario
 order by u.nombreusu asc
-go
+go*/
 
 create proc usp_agregar_medico
 @img varchar(255),
@@ -419,38 +447,34 @@ go
 create table tb_cita(
 idcita int primary key identity(1,1),
 idmedico int not null,
-nompaciente varchar(100) not null,
-dnipaciente int not null check(len(dnipaciente) = 8),
+idusuario int not null foreign key(idusuario) references tb_usuario(idusuario),
 fechacita date not null,
+horacita time not null,
 --horacita int not null default datepart(hour,GETDATE()),
 --minutocita int not null,
---idusuario int not null foreign key(idusuario) references tb_usuario(idusuario),
---email varchar(60) not null,
---celularusu varchar(15) not null,
-horacita time not null,
 preciocita decimal(11,2) not null default 50.00 check(preciocita >= 00.00),
 pagocita decimal(11,2) not null default 0.00,
-observaciones varchar(350) default null,
-prescripcion varchar(350) default null,
-idestado int not null default 5,
+observaciones varchar(350) default 'ninguna observación',
+prescripcion varchar(350) default 'ninguna prescripción',
+idestado int not null default 7,
 fechaReg date not null default GETDATE(),
 foreign key(idmedico) references tb_medico(idmedico),
 foreign key(idestado) references tb_estado(idestado)
 )
 --truncate table tb_cita
 --insert into tb_cita values('estoy mal',3,GETDATE(),datepart(hour,GETDATE()),'','',default,default)
-insert into tb_cita values(1,'Juan de la torre',12345678,'5-6-2021','2:50',default,default,default,default,default,default)
-insert into tb_cita values(2,'Maria galvez',98762541,'5-6-2021','5:50 PM',default,default,default,default,default,default)
-insert into tb_cita values(2,'Lucas montero',65463213,'5-6-2021','3:50 AM',default,default,default,default,default,default)
+insert into tb_cita values(1,4,'5-6-2021','2:50',default,default,'ninguna observación','ninguna prescripción',default,default)
+insert into tb_cita values(2,3,'5-7-2021','5:50 PM',default,default,'ninguna observación','ninguna prescripción',default,default)
+insert into tb_cita values(1,4,'5-12-2021','3:50 AM',default,default,'ninguna observación','ninguna prescripción',default,default)
 go
 
 /******************************LISTARES********************************/
 -- SP para usuario
 create proc usp_listar_citas_de_paciente
-@nom varchar(100)
+@paciente int
 as
 select*from tb_cita
-where nompaciente = @nom
+where idusuario = @paciente
 order by idcita asc
 go
 
@@ -460,31 +484,58 @@ as
 select*from tb_cita order by idcita asc
 go
 
-create proc usp_listar_citas_x_id
+create proc usp_listar_man_citas
+@idmed int
+as
+select c.idcita,u.nombreusu,c.fechacita,c.horacita,e.descripcion from tb_cita c
+inner join tb_usuario u
+on c.idusuario = u.idusuario
+inner join tb_estado e
+on c.idestado = e.idestado
+inner join tb_medico m
+on c.idmedico = m.idmedico
+where m.idcuenta = @idmed
+order by idcita asc
+go
+--exec usp_listar_man_citas 6
+
+create proc usp_listar_reporte_citas_atendidas
+as
+select c.idcita,e.nombreesp,c.preciocita,c.pagocita,es.descripcion,c.fechacita from tb_cita c
+inner join tb_medico m
+on c.idmedico = m.idmedico
+inner join tb_especialidad e
+on m.idespecialidad = e.idespecialidad
+inner join tb_estado es
+on c.idestado = es.idestado
+order by 1 asc
+go
+
+/*create proc usp_listar_citas_x_id
 @idcita int
 as
 select*from tb_cita
 where idcita = @idcita
-go
+go*/
 
-create proc usp_listar_citas_x_medico_o_estado
+/*create proc usp_listar_citas_x_medico_o_estado
 @estado int,
 @medico int
 as
 select*from tb_cita
 where idestado = @estado or idmedico = @medico
 order by idcita asc
-go
+go*/
 
 -- SP el medico
-create proc usp_listar_citas_x_paciente_medico
+/*create proc usp_listar_citas_x_paciente_medico
 @medico int,
-@paciente varchar(100)
+@paciente int
 as
 select*from tb_cita
-where idmedico = @medico and nompaciente like '%'+@paciente+'%'
+where idmedico = @medico and idusuario = @paciente
 order by idcita asc
-go
+go*/
 
 /*create proc usp_listar_citas_x_paciente
 @nombre int
@@ -493,40 +544,40 @@ select*from tb_cita
 where nompaciente like @nombre+'%'
 order by idcita asc
 go*/
-create proc usp_listar_citas_x_medico_estado
+/*create proc usp_listar_citas_x_medico_estado
 @medico int,
 @estado int
 as
 select*from tb_cita
 where idmedico = @medico and idestado = @estado
 order by idcita asc
-go
+go*/
 
 /************************************CRUDs***************************************/
 -- SP para pacientes
 create proc usp_agregar_cita
 @medico int,
-@paciente varchar(100),
-@dni int,
+@paciente int,
 @fecha date,
 @hora time
 as
-insert into tb_cita values(@medico,@paciente,@dni,@fecha,@hora,default,default,default,default,default,default)
+insert into tb_cita values(@medico,@paciente,@fecha,@hora,default,default,default,default,default,default)
 go
 
 -- SP para medicos
 create proc usp_editar_cita
 @idcita int,
-@medico int,
-@nompac varchar(100),
 @observaciones varchar(350),
 @prescripcion varchar(350),
 @pago decimal(11,2),
 @estado int
 as
-update tb_cita set idmedico = @medico, nompaciente = @nompac, observaciones = @observaciones, 
+update tb_cita set observaciones = @observaciones, 
 prescripcion = @prescripcion, pagocita = @pago, idestado = @estado where idcita = @idcita
 go
+
+--exec usp_editar_cita 2,'ninguna ob','ninguna pre',5.00,7
+--select*from tb_cita
 
 /***********************************************ECOMMERCE***************************************************/
 CREATE TABLE tb_proveedor(
@@ -538,7 +589,7 @@ razonprov varchar(60) not null unique,
 iddistrito int not null references tb_distrito(iddistrito),
 direccionprov varchar(60) not null,
 fechaRegprov date default getdate() not null,
-idestado int default 1 not null
+idestado int default 3 not null
 foreign key(idestado) references tb_estado(idestado)
 );
 -- truncate table tb_proveedor
@@ -552,12 +603,23 @@ as
 select*from tb_proveedor order by idproveedor asc
 go
 
-create proc usp_listar_proveedores_x_id
+create proc usp_listar_man_proveedores
+as
+select p.idproveedor,p.nombreprov,p.telefonoprov,d.descripcion,e.descripcion
+from tb_proveedor p
+inner join tb_distrito d
+on p.iddistrito = d.iddistrito
+inner join tb_estado e
+on p.idestado = e.idestado
+order by idproveedor asc
+go
+
+/*create proc usp_listar_proveedores_x_id
 @idprov int
 as
 select*from tb_proveedor
 where idproveedor = @idprov
-go
+go*/
 
 create proc usp_agregar_proveedor
 @ruc varchar(11),
@@ -592,7 +654,7 @@ stockfarm int not null check(stockfarm >= 0),
 preciofarm decimal(11,2) not null check(preciofarm > 00.00),
 descripcionfarm varchar(300) not null,
 idproveedor int references tb_proveedor(idproveedor),
-idestado int not null default 3,
+idestado int not null default 5,
 fechaReg date default getdate() not null,
 foreign key(idestado) references tb_estado(idestado)
 )
@@ -607,28 +669,28 @@ as
 select*from tb_farmaceutico order by idfarmaceutico asc
 go
 
-create proc usp_listar_farmaceutico_x_id
+/*create proc usp_listar_farmaceutico_x_id
 @idfarm int
 as
 select*from tb_farmaceutico
 where idfarmaceutico = @idfarm
-go
+go*/
 
-create proc usp_listar_farmaceutico_x_proveedor
+/*create proc usp_listar_farmaceutico_x_proveedor
 @prov int
 as
 select * from tb_farmaceutico
 where idproveedor = @prov
 order by idfarmaceutico asc
-go
+go*/
 
-create proc usp_listar_farmaceutico_x_estado
+/*create proc usp_listar_farmaceutico_x_estado
 @estado int
 as
 select * from tb_farmaceutico
 where idestado = @estado
 order by idfarmaceutico asc
-go
+go*/
 
 create proc usp_agregar_farmaceutico
 @foto varchar(255),
@@ -648,23 +710,26 @@ create proc usp_editar_farmaceutico
 @stock int,
 @precio decimal(11,2),
 @desc varchar(300),
-@proveedor int
+@proveedor int,
+@estado int
 as
-update tb_farmaceutico set fotofarm = @foto, nombrefarm = @nom, stockfarm = @stock, preciofarm = @precio, descripcionfarm = @desc,
-idproveedor = @proveedor where idfarmaceutico = @idfarm
+update tb_farmaceutico set fotofarm = @foto, nombrefarm = @nom, stockfarm = @stock, 
+preciofarm = @precio, descripcionfarm = @desc,
+idproveedor = @proveedor, idestado = @estado
+where idfarmaceutico = @idfarm
 go
 
 create table tb_venta(
 idventa int primary key identity(1,1),
 idpaciente int references tb_usuario(idusuario),
-idvendedor int references tb_usuario(idusuario),
-cantidadtot int not null,
-preciotot decimal(11,2) not null default 0.00,
-fechaReg date default getdate() not null
+--idvendedor int references tb_usuario(idusuario),
+--cantidadtot int not null,
+--preciotot decimal(11,2) not null default 0.00,
+fechaReg date default getdate()
 )
 --truncate table tb_venta
-insert into tb_venta values(3,7,20,30.00,default)
-insert into tb_venta values(4,8,13,15.00,default)
+insert into tb_venta values(3,default)
+insert into tb_venta values(4,default)
 go
 
 create proc usp_listar_venta
@@ -672,21 +737,25 @@ as
 select*from tb_venta order by idventa asc
 go
 
-create proc usp_listar_venta_x_vendedor
+/*create proc usp_listar_venta_x_vendedor
 @vend int
 as
 select * from tb_venta
 where idvendedor = @vend
 order by idventa asc
-go
+go*/
 
 create proc usp_agregar_venta
 @paciente int,
-@vendedor int,
-@cant int,
-@prec decimal(11,2)
+--@cant int,
+--@prec decimal(11,2),
+@n int output -- Variable de salida
 as
-insert into tb_venta values(@paciente,@vendedor,@cant,@prec,default)
+begin
+insert into tb_venta values(@paciente,default)
+select @n = SCOPE_IDENTITY() -- SCOPE_IDENTITY() => devuelve el último ID creado en la misma conexión
+return @n
+end
 go
 
 create table tb_detalleVenta(
@@ -699,12 +768,16 @@ foreign key(idventa) references tb_venta(idventa),
 foreign key(idfarmaceutico) references tb_farmaceutico(idfarmaceutico)
 );
 --truncate table tb_detalleVenta
-insert into tb_detalleVenta values(1,1,2,12.00)
+insert into tb_detalleVenta values(1,1,3,12.00)
+insert into tb_detalleVenta values(1,2,2,20.00)
 go
 
 create proc usp_listar_detalle_venta
 as
-select*from tb_detalleVenta order by idventa asc
+select d.idventa,f.nombrefarm,d.cantidaddet,d.precioUnidaddet from tb_detalleVenta d
+inner join tb_farmaceutico f
+on d.idfarmaceutico = f.idfarmaceutico
+order by d.idventa asc
 go
 
 create proc usp_agregar_detalle_venta
@@ -716,31 +789,63 @@ as
 insert into tb_detalleVenta values(@idventa,@farm,@cant,@preunit)
 go
 
+create proc usp_actualiza_unidades
+@idfarm int,
+@cantidad int
+as
+update tb_farmaceutico set stockfarm -= @cantidad
+where idfarmaceutico = @idfarm
+go
+
 /***********************************************SP PARA PANEL DE CONTROL***************************************************/
-select count(idmedico) from tb_medico
+/*select count(idmedico) from tb_medico
 select count(idusuario) from tb_usuario
-select count(idcita) from tb_cita
+select count(idcita) from tb_cita where idestado = 8*/
 
 -- VENTAS
 -- este mes
-select COUNT(idventa) from tb_venta
+create proc usp_ventas_este_mes
+as
+select * from tb_venta
 where Month(fechaReg) = Month(getdate())
+go
 -- mes pasado
-select COUNT(idventa) from tb_venta
+create proc usp_ventas_este_mes_pasado
+as
+select * from tb_venta
 where Month(fechaReg) = month(dateadd(month, -1, GETDATE()))
+go
 
 --USUARIOS
 -- este mes
-select COUNT(idusuario) from tb_usuario
+create proc usp_usuarios_este_mes
+as
+select * from tb_usuario
 where Month(fechaRegusu) = Month(getdate())
+go
 -- mes pasado
-select COUNT(idusuario) from tb_usuario
+create proc usp_usuarios_este_mes_pasado
+as
+select * from tb_usuario
 where Month(fechaRegusu) = month(dateadd(month, -1, GETDATE()))
+go
 
 --INGRESOS VENTAS
 -- este mes
-select isnull(sum(preciotot),0.00) from tb_venta
-where Month(fechaReg) = Month(getdate())
+create proc usp_ingresos_este_mes
+as
+--select ISNULL(sum(d.precioUnidaddet),0.00) from tb_detalleVenta d
+select * from tb_detalleVenta d
+inner join tb_venta v
+on d.idventa = v.idventa
+where MONTH(v.fechaReg) = MONTH(getdate())
+go
 -- mes pasado
-select isnull(sum(preciotot),0.00) from tb_venta
+create proc usp_ingresos_este_mes_pasado
+as
+select * from tb_detalleVenta d
+--select ISNULL(sum(d.precioUnidaddet),0.00) from tb_detalleVenta d
+inner join tb_venta v
+on d.idventa = v.idventa
 where Month(fechaReg) = month(dateadd(month, -1, GETDATE()))
+go

@@ -1,0 +1,96 @@
+﻿@{
+    ViewBag.Title = "Login";
+}
+
+<style>
+    body {
+        padding-top: 0px;
+        padding-bottom: 0px;
+        background-image: url("../../IMAGENES/bg1.png");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    a {
+        text-decoration: none;
+        color: #17B7DA;
+    }
+
+    .card-body {
+        padding: 1rem 2rem;
+    }
+
+    .card-custom {
+        border-radius: 20px;
+        border-style: none;
+    }
+
+    .text-custom {
+        color: #969DA3;
+        font-weight: bold;
+        padding: 5px 5px 5px 0px;
+        font-size: 24px;
+    }
+
+    /* Pequeño hack para que el autofill no cambie el fondo de color (ignora el error) */
+    input:-webkit-autofill,
+    input:-webkit-autofill:focus {
+        transition: background-color 600000s 0s, color 600000s 0s;
+    }
+
+    .input-custom, .input-custom:focus {
+        background-color: #2A3B71;
+        border-color: #284CCB;
+        max-width: 999px;
+        color: white;
+        font-weight: bold;
+    }
+
+    .button-custom {
+        background-color: #2A3B71;
+        color: white;
+        font-weight: bold;
+        font-size: 20px;
+        padding: 8px 50px 8px 50px;
+        border-style: solid;
+        border-color: white;
+        border-width: 1px;
+        border-radius: 10px;
+    }
+</style>
+
+@using (Html.BeginForm("Login", "Home", FormMethod.Post))
+{
+    <form>
+        <div class="d-flex justify-content-md-center align-items-center vh-100">
+            <div>
+                <div class="card mx-auto card-custom" style="width: 26rem; background-color: #2A3B71;">
+                    <div class="card-body" style="width: 100%;">
+                        <img src="~/IMAGENES/logo.png" alt="PLACEHOLDER_LOGO" class="mx-auto d-block" style="width: 220px;" />
+                        <br />
+                        <label class="text-custom">Email: </label>
+                        <input type="email" class="form-control input-custom" id="email" name="email" autocomplete="off" autofocus>
+                        <label class="text-custom">Contraseña: </label>
+                        <input type="password" class="form-control input-custom" id="clave" name="clave">
+                        <br />
+                        <div class="text-center">
+                            <input type="submit" value="ENTRAR" class="button-custom" />
+                        </div>
+                        <br />
+                        <p class="text-custom" style="font-size:17px;">
+                            No tienes cuenta?
+                            @Html.ActionLink("Registrate", "AgregarCuentaPaciente", null, new { @class = "card-link text-decoration-none" })
+                        </p>
+                    </div>
+                    @if (ViewBag.msj != null)
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            @ViewBag.msj
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </form>
+}

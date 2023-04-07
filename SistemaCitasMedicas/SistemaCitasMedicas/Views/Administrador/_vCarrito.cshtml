@@ -1,0 +1,73 @@
+﻿@model IEnumerable<SistemaCitasMedicas.Models.Item>
+
+<div class="col-md-9">
+    <table class="table">
+        <tr class="table-dark">
+            <th>
+                Nro de Item
+            </th>
+            <th>
+                Producto
+            </th>
+            <th>
+                Precio Unitario
+            </th>
+            <th>
+                Cantidad
+            </th>
+            <th>
+                Total
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td width="15%" class="mt-2">
+                    @Html.DisplayFor(modelItem => item.codigo)
+                </td>
+                <td width="15%" class="mt-2">
+                    @Html.DisplayFor(modelItem => item.descripcion)
+                </td>
+                <td width="20%" class="mt-2">
+                    @Html.DisplayFor(modelItem => item.precio)
+                </td>
+                <!--Insertamos un formulario para ejecutarel proceso actualizar-->
+                @using (Html.BeginForm("ActualizarCantidad", "Administrador", FormMethod.Post))
+                {
+                    @Html.Hidden("id", item.codigo)
+                    <td width="15%" class="mt-2">
+                        @Html.TextBox("q", item.cantidad, new {type="number",@class= "form-control", min = "1", max = "8" })
+                    </td>
+                <td class="mt-2">
+                    @Html.DisplayFor(modelItem => item.monto)
+                </td>
+                <td class="pt-0">
+                    <button type="submit" class="btn btn-primary mt-2 bi bi-pencil"></button>
+                    @Html.ActionLink(" ", "EliminarItem", new { id = item.codigo }, new { @class = "btn btn-danger mt-2 bi bi-trash mx-md-1" })
+                </td>
+                }
+            </tr>
+        }
+    </table>
+
+</div>
+<div class="col-md-3">
+    <div class="card">
+        <h4 class="card-header bg-success text-center text-white text-uppercase font-monospace fw-bold">Resumen de la compra</h4>
+        <div class="p-3">
+            <label class="form-label">Cantidad total de productos</label>
+            <div class="input-group">
+                <span class="input-group-text bi bi-box-seam"></span>
+                <input value="@Model.Sum(i => i.cantidad)" class="form-control bg-transparent" disabled />
+            </div>
+            <label class="form-label mt-3">Montototal del carrito</label>
+            <div class="input-group">
+                <span class="input-group-text">S/.</span>
+                <input value="@Model.Sum(i => i.monto)" class="form-control bg-transparent" disabled />
+            </div>
+            @Html.ActionLink("Ir a Comprar", "Comprar",null, new { @class = "btn btn-success d-flex justify-content-center mt-3" })
+        </div>
+    </div>
+</div>

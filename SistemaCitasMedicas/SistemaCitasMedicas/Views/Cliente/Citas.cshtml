@@ -1,0 +1,59 @@
+﻿@model IEnumerable<SistemaCitasMedicas.Models.MedicoList1>
+
+@{
+    ViewBag.Title = "Citas";
+}
+@Html.Partial("_ClienteHeader")
+
+<h2 class="mx-4 my-4" style="color: saddlebrown">Paso 1: Elija un médico por especialidad</h2>
+
+@using (Html.BeginForm())
+{
+    <div class="mx-4 my-4">
+        <p class="form-label">
+            Elija la especialidad:
+            @Html.DropDownList("idmedico", ViewBag.medicos as SelectList, null, new { @class = "form-select-sm mx-4" })
+            <button class="btn btn-success mx-3">Consulta</button>
+        </p>
+    </div>
+}
+
+<table class="table">
+    <tr class="text-center">
+        <th>
+            <label class="form-label">Medico</label>
+        </th>
+        <th>
+            <label class="form-label">Especilidad</label>
+        </th>
+        <th>
+            <label class="form-label">Hora inicio</label>
+        </th>
+        <th>
+            <label class="form-label">Hora fin</label>
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr class="text-center">
+            <td class="d-flex justify-content-center">
+                <img src="@Url.Content(item.fotomed)" style="width:100px;" alt="Img Medico" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.especialidad)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.horaini)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.horafin)
+            </td>
+            <td>
+                @Html.ActionLink("Seleccione", "Solicitar", new { idmedico = item.idmedico }, new { @class = "text-decoration-none" })
+            </td>
+        </tr>
+    }
+
+</table>

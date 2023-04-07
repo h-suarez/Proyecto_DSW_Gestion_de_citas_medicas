@@ -1,0 +1,89 @@
+﻿@model SistemaCitasMedicas.Models.Farmaceutico
+@using SistemaCitasMedicas.Models
+
+@{
+    ViewBag.Title = "Seleccionar";
+    var usuario = (Usuario)Session["usuario"];
+}
+
+<body class="sb-nav-fixed">
+    @Html.Partial("_AdminMenuSuperior")
+    <div id="layoutSidenav">
+        @Html.Partial("_AdminMenu")
+        <div id="layoutSidenav_content">
+            <main class="container-md">
+
+                <div class="form-horizontal">
+                    <h4 class="pt-3 text-secondary text-uppercase">Detalle del Farmaceutico</h4>
+                    <hr />
+                    <div class="card">
+                        <div class="m-3">
+                            <div class="d-flex">
+                                @Html.ActionLink(" Volver", "CompraFarmaceutico", null, new { @class = "btn btn-link text-decoration-none bi bi-arrow-left" })
+                                <h4 class="mx-5">@Model.nombrefarm</h4>
+                                <div>@ViewBag.mensaje</div>
+                            </div>
+                            <hr />
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-6 mt-4">
+                                    <div class="d-flex justify-content-center">
+                                        <img src="@Url.Content(Model.fotofarm)" class="w-50 card-img" alt="Img Farmaceutico" />
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mt-4">
+                                    <div class="card p-4 border border-success">
+                                        <label class="form-label">Cantidad del producto</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text bi bi-box-seam"></span>
+                                            <input value="@Model.stockfarm" class="form-control bg-transparent" disabled />
+                                        </div>
+                                        <label class="form-label mt-2">Precio del producto</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">S/.</span>
+                                            <input value="@Model.preciofarm" class="form-control bg-transparent" disabled />
+                                        </div>
+                                        <div>
+                                            @using (Html.BeginForm())
+                                            {
+                                                @Html.Hidden("codigo", Model.idfarmaceutico)
+                                                <div>
+                                                    <label class="form-label  mt-2">Ingrese cantidad</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text bi bi-cart-plus-fill border border-success text-success"></span>
+                                                        @Html.TextBox("cantidad", 1, new { @class = "form-control border border-success", type = "number", min = "1" })
+                                                    </div>
+                                                </div>
+                                                <div class="mt-3">
+                                                    <input type="submit" value="Agregar" class="btn btn-outline-success text-uppercase" disabled="@ViewBag.d"  />
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row my-3">
+                                <div class="col-md-6 mt-4">
+                                    <div class="d-grid gap-2">
+                                        <button class="btn btn-secondary text-decoration-none text-white text-uppercase bi bi-caret-down-fill" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                            Ver descripción
+                                        </button>
+                                        <div class="collapse" id="collapseExample">
+                                            <div class="card-body border border-secondary rounded mt-4">
+                                                <p>
+                                                    @Model.descripcionfarm
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+</body>

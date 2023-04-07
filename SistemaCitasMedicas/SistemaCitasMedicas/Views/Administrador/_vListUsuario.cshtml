@@ -1,0 +1,55 @@
+﻿@model IEnumerable<SistemaCitasMedicas.Models.UsuarioList1>
+
+<div class="card-body mt-3">
+    <table class="table" id="datatablesSimple">
+        <thead class="table-dark mt-0 pt-0">
+            <tr>
+                <th>
+                    Id
+                </th>
+                <th>
+                    Nombre
+                </th>
+                <th>
+                    Sexo
+                </th>
+                <th>
+                    Correo
+                </th>
+                <th>
+                    Tipo de cuenta
+                </th>
+                <th>
+                    Estado de cuenta
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.idusuario)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.nombreusu)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.sexo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.tipo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.estado)
+            </td>
+            <td>
+                @Html.ActionLink("Seleccione", "MantenimientoUsuarios", new { idusu=item.idusuario }, new { @class = "btn btn-link text-decoration-none p-0" })
+            </td>
+        </tr>
+    }
+
+    </table>
+</div>

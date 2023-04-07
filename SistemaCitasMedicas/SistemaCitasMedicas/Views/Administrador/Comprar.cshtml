@@ -1,0 +1,65 @@
+﻿@model SistemaCitasMedicas.Models.Venta
+@using SistemaCitasMedicas.Models
+
+@{
+    ViewBag.Title = "Comprar";
+    var usuario = (Usuario)Session["usuario"];
+}
+
+<body class="sb-nav-fixed">
+    @Html.Partial("_AdminMenuSuperior")
+    <div id="layoutSidenav">
+        @Html.Partial("_AdminMenu")
+        <div id="layoutSidenav_content">
+            <main class="container-md">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-horizontal">
+
+                        <div class="d-flex pt-3">
+                            @Html.ActionLink(" Volver", "CompraFarmaceutico", null, new { @class = "btn btn-link text-decoration-none bi bi-arrow-left px-0" })
+                            <h4 class="text-secondary text-uppercase mx-5 mt-2">Proceso de compra</h4>
+                            <div class="mt-2">@ViewBag.mensaje</div>
+                        </div>
+                        <hr />
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="card">
+                            <div class="m-3">
+                                <div class="row g-3 mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Seleccione al cliente</label>
+                                        <div class="">
+                                            @Html.DropDownList("idpaciente", ViewBag.usuarios as SelectList, new { @class = "form-select" })
+                                            @Html.ValidationMessageFor(model => model.idpaciente, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Nro de tarjeta</label>
+                                        <div class="">
+                                            <input type="number" placeholder="Ingrese N° de tarjeta" class="form-control" required />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row g-3 mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">CVV de tarjeta</label>
+                                        <div class="">
+                                            <input type="number" placeholder="Ingrese CVV de tarjeta" max="999" min="100" class="form-control" required />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-5">
+                                    <div class="d-flex justify-content-around">
+                                        <input type="submit" value="Registrar venta" class="btn btn-success text-uppercase fw-bold" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </main>
+        </div>
+    </div>
+</body>
